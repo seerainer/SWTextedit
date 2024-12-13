@@ -1,4 +1,4 @@
-# FileShredder
+# SWTextedit
 
 [![CodeQL](https://github.com/seerainer/SWTextedit/workflows/CodeQL/badge.svg)](https://github.com/seerainer/SWTextedit/security/code-scanning)
 
