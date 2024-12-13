@@ -54,19 +54,7 @@
       "glob": "DE.properties"
     },
     {
-      "glob": "DE_de.properties"
-    },
-    {
-      "glob": "DE_de_AT.properties"
-    },
-    {
       "glob": "EN.properties"
-    },
-    {
-      "glob": "EN_de.properties"
-    },
-    {
-      "glob": "EN_de_AT.properties"
     },
     {
       "glob": "META-INF/services/java.lang.System$LoggerFinder"
@@ -102,66 +90,6 @@
       "glob": "info.png"
     },
     {
-      "glob": "main/resources/DE.properties"
-    },
-    {
-      "glob": "main/resources/DE_de.properties"
-    },
-    {
-      "glob": "main/resources/DE_de_AT.properties"
-    },
-    {
-      "glob": "main/resources/EN.properties"
-    },
-    {
-      "glob": "main/resources/EN_de.properties"
-    },
-    {
-      "glob": "main/resources/EN_de_AT.properties"
-    },
-    {
-      "glob": "main/resources/copy.gif"
-    },
-    {
-      "glob": "main/resources/cut.gif"
-    },
-    {
-      "glob": "main/resources/del.gif"
-    },
-    {
-      "glob": "main/resources/info.gif"
-    },
-    {
-      "glob": "main/resources/new.gif"
-    },
-    {
-      "glob": "main/resources/open.gif"
-    },
-    {
-      "glob": "main/resources/paste.gif"
-    },
-    {
-      "glob": "main/resources/print.gif"
-    },
-    {
-      "glob": "main/resources/redo.gif"
-    },
-    {
-      "glob": "main/resources/save.gif"
-    },
-    {
-      "glob": "main/resources/saveas.gif"
-    },
-    {
-      "glob": "main/resources/search.gif"
-    },
-    {
-      "glob": "main/resources/text.gif"
-    },
-    {
-      "glob": "main/resources/undo.gif"
-    },
-    {
       "glob": "new.gif"
     },
     {
@@ -190,66 +118,6 @@
     },
     {
       "glob": "redo.png"
-    },
-    {
-      "glob": "resources/DE.properties"
-    },
-    {
-      "glob": "resources/DE_de.properties"
-    },
-    {
-      "glob": "resources/DE_de_AT.properties"
-    },
-    {
-      "glob": "resources/EN.properties"
-    },
-    {
-      "glob": "resources/EN_de.properties"
-    },
-    {
-      "glob": "resources/EN_de_AT.properties"
-    },
-    {
-      "glob": "resources/copy.gif"
-    },
-    {
-      "glob": "resources/cut.gif"
-    },
-    {
-      "glob": "resources/del.gif"
-    },
-    {
-      "glob": "resources/info.gif"
-    },
-    {
-      "glob": "resources/new.gif"
-    },
-    {
-      "glob": "resources/open.gif"
-    },
-    {
-      "glob": "resources/paste.gif"
-    },
-    {
-      "glob": "resources/print.gif"
-    },
-    {
-      "glob": "resources/redo.gif"
-    },
-    {
-      "glob": "resources/save.gif"
-    },
-    {
-      "glob": "resources/saveas.gif"
-    },
-    {
-      "glob": "resources/search.gif"
-    },
-    {
-      "glob": "resources/text.gif"
-    },
-    {
-      "glob": "resources/undo.gif"
     },
     {
       "glob": "save.gif"
@@ -283,46 +151,19 @@
     {
       "name": "DE",
       "locales": [
-        "de-AT"
+        "de"
       ]
     },
     {
       "name": "EN",
       "locales": [
-        "de-AT"
-      ]
-    },
-    {
-      "name": "main/resources/DE",
-      "locales": [
-        "de-AT",
-        "und"
-      ]
-    },
-    {
-      "name": "main/resources/EN",
-      "locales": [
-        "de-AT",
-        "und"
-      ]
-    },
-    {
-      "name": "resources/DE",
-      "locales": [
-        "de-AT"
-      ]
-    },
-    {
-      "name": "resources/EN",
-      "locales": [
-        "de-AT"
+        "en"
       ]
     },
     {
       "name": "sun.util.resources.cldr.LocaleNames",
       "locales": [
         "de",
-        "de-AT",
         "und"
       ]
     }
@@ -380,6 +221,9 @@
     },
     {
       "type": "org.eclipse.swt.dnd.Clipboard$1"
+    },
+    {
+      "type": "org.eclipse.swt.dnd.DropTarget$1"
     },
     {
       "type": "org.eclipse.swt.dnd.OleEnumFORMATETC$1"
@@ -1131,6 +975,26 @@
         },
         {
           "name": "dshSection"
+        }
+      ]
+    },
+    {
+      "type": "org.eclipse.swt.internal.win32.DOCINFO",
+      "fields": [
+        {
+          "name": "cbSize"
+        },
+        {
+          "name": "fwType"
+        },
+        {
+          "name": "lpszDatatype"
+        },
+        {
+          "name": "lpszDocName"
+        },
+        {
+          "name": "lpszOutput"
         }
       ]
     },
