@@ -59,7 +59,7 @@ public final class StatusBarUtil {
 		if (keycode == SWT.INSERT) {
 			if ("INS".equals(lab2.getText())) { //$NON-NLS-1$
 				lab2.setText("OVR"); //$NON-NLS-1$
-			} else { // $NON-NLS-1$
+			} else {
 				lab2.setText("INS"); //$NON-NLS-1$
 			}
 		}
