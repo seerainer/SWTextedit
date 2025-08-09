@@ -1,17 +1,59 @@
-# SWTextedit
+# ✨ SWTextedit
 
-[![CodeQL](https://github.com/seerainer/SWTextedit/workflows/CodeQL/badge.svg)](https://github.com/seerainer/SWTextedit/security/code-scanning)
+<p align="center">
+  <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" width="96" height="96" />
+</p>
 
-~~~ sh
-git clone https://github.com/seerainer/SWTextedit.git
-~~~
+<p align="center">
+  <b>SWTextedit</b> is a modern, cross-platform, and lightweight text editor built with Java and Eclipse SWT.<br>
+  <i>Fast. Minimal. Open Source.</i>
+</p>
 
-**SWTextedit** a simple text editor.
+<p align="center">
+  <a href="https://github.com/seerainer/SWTextedit/releases"><img src="https://img.shields.io/github/v/release/seerainer/SWTextedit?style=flat-square" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/seerainer/SWTextedit?style=flat-square" alt="License"></a>
+</p>
 
-### Dependencies
+---
 
-- [eclipse.org/swt](https://www.eclipse.org/swt/) ([EPL 2 license](https://www.eclipse.org/legal/epl-2.0/))
+## 🚀 Features
 
-### Bugs and Feedback
+- 🖥️ **Cross-platform**: Windows, Linux, macOS (Java 17+)
+- 🌙 **Dark mode**: Adapts to system dark mode (Windows)
+- 🔄 **Undo/Redo**: Huge stack for safe editing
+- 🔍 **Find/Replace**: Powerful search dialog
+- 🌐 **Encoding support**: ASCII, ISO, UTF-8, UTF-16, and more
+- 🖋️ **Customizable font & colors**
+- 🌏 **Multi-language**: English & German
+- 🖨️ **Print support**
+- 🖱️ **Drag & Drop** file opening
+- 💼 **Portable**: No install needed
 
-For bugs, questions and discussions please use the [GitHub Issues](https://github.com/seerainer/SWTextedit/issues).
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Java 17 or newer (Java 24 recommended)
+- SWT libraries (auto-managed by Gradle)
+
+### Build & Run
+
+```sh
+# Clone
+$ git clone https://github.com/seerainer/SWTextedit.git
+$ cd SWTextedit
+
+# Build
+$ ./gradlew build
+
+# Run
+$ java -jar build/libs/SWTextedit-<version>.jar
+```
+
+### 🏃 Native Image (Optional)
+Build a native executable with GraalVM:
+```sh
+./gradlew nativeCompile
+```
+Find the binary in `build/native/nativeCompile/`.
