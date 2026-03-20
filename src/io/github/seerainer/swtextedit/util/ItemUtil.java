@@ -38,57 +38,57 @@ import io.github.seerainer.swtextedit.config.ConfigData;
  */
 public final class ItemUtil {
 
-	/**
-	 * Enables / disables the edit menu items.
-	 *
-	 * @param menu       The parent of the menu items.
-	 * @param toolBar    The parent of the tool items.
-	 * @param configData Instance of the configuration values.
-	 * @param text       The Instance of the text widget.
-	 * @param undoStack  The list which save all undo actions.
-	 * @param redoStack  The list which save all redo actions.
-	 */
-	public static void enableMenuItems(final Menu menu, final ToolBar toolBar, final ConfigData configData,
-			final StyledText text, final List<?> undoStack, final List<?> redoStack) {
-		final var count = text.getSelectionCount();
-		final var charCount = text.getCharCount();
-		menu.getItem(0).setEnabled(undoStack.size() > 0); // undo
-		menu.getItem(1).setEnabled(redoStack.size() > 0); // redo
-		menu.getItem(3).setEnabled(count > 0); // cut
-		menu.getItem(4).setEnabled(count > 0); // copy
-		menu.getItem(5).setEnabled(
-				(String) (new Clipboard(menu.getDisplay()).getContents(TextTransfer.getInstance())) != null); // paste
-		menu.getItem(6).setEnabled(count > 0); // delete
-		menu.getItem(8).setEnabled(charCount > 0); // select all
-		menu.getItem(9).setEnabled(charCount > 0); // delete all
+    /** Private empty constructor. */
+    private ItemUtil() {
+    }
 
-		if (menu.getItemCount() > 10) {
-			menu.getItem(11).setEnabled(count > 0 || charCount > 0); // uppercase
-			menu.getItem(12).setEnabled(count > 0 || charCount > 0); // lowercase
-			menu.getItem(14).setEnabled(count > 0 || charCount > 0); // trim
-		}
+    /**
+     * Enables / disables the edit menu items.
+     *
+     * @param menu       The parent of the menu items.
+     * @param toolBar    The parent of the tool items.
+     * @param configData Instance of the configuration values.
+     * @param text       The Instance of the text widget.
+     * @param undoStack  The list which save all undo actions.
+     * @param redoStack  The list which save all redo actions.
+     */
+    public static void enableMenuItems(final Menu menu, final ToolBar toolBar, final ConfigData configData,
+	    final StyledText text, final List<?> undoStack, final List<?> redoStack) {
+	final var count = text.getSelectionCount();
+	final var charCount = text.getCharCount();
+	menu.getItem(0).setEnabled(undoStack.size() > 0); // undo
+	menu.getItem(1).setEnabled(redoStack.size() > 0); // redo
+	menu.getItem(3).setEnabled(count > 0); // cut
+	menu.getItem(4).setEnabled(count > 0); // copy
+	menu.getItem(5).setEnabled(
+		(String) (new Clipboard(menu.getDisplay()).getContents(TextTransfer.getInstance())) != null); // paste
+	menu.getItem(6).setEnabled(count > 0); // delete
+	menu.getItem(8).setEnabled(charCount > 0); // select all
+	menu.getItem(9).setEnabled(charCount > 0); // delete all
 
-		enableToolItems(toolBar, menu, configData);
+	if (menu.getItemCount() > 10) {
+	    menu.getItem(11).setEnabled(count > 0 || charCount > 0); // uppercase
+	    menu.getItem(12).setEnabled(count > 0 || charCount > 0); // lowercase
+	    menu.getItem(14).setEnabled(count > 0 || charCount > 0); // trim
 	}
 
-	/**
-	 * Enables / disables the edit tool items.
-	 *
-	 * @param tool       The parent of the tool items.
-	 * @param menu       The parent of the menu items.
-	 * @param configData Instance of the configuration values.
-	 */
-	private static void enableToolItems(final ToolBar tool, final Menu menu, final ConfigData configData) {
-		tool.getItem(2).setEnabled(configData.isHasChanged()); // save
-		tool.getItem(5).setEnabled(menu.getItem(0).isEnabled()); // undo
-		tool.getItem(6).setEnabled(menu.getItem(1).isEnabled()); // redo
-		tool.getItem(8).setEnabled(menu.getItem(3).isEnabled()); // cut
-		tool.getItem(9).setEnabled(menu.getItem(4).isEnabled()); // copy
-		tool.getItem(10).setEnabled(menu.getItem(5).isEnabled()); // paste
-		tool.getItem(11).setEnabled(menu.getItem(6).isEnabled()); // delete
-	}
+	enableToolItems(toolBar, menu, configData);
+    }
 
-	/** Private empty constructor. */
-	private ItemUtil() {
-	}
+    /**
+     * Enables / disables the edit tool items.
+     *
+     * @param tool       The parent of the tool items.
+     * @param menu       The parent of the menu items.
+     * @param configData Instance of the configuration values.
+     */
+    private static void enableToolItems(final ToolBar tool, final Menu menu, final ConfigData configData) {
+	tool.getItem(2).setEnabled(configData.isHasChanged()); // save
+	tool.getItem(5).setEnabled(menu.getItem(0).isEnabled()); // undo
+	tool.getItem(6).setEnabled(menu.getItem(1).isEnabled()); // redo
+	tool.getItem(8).setEnabled(menu.getItem(3).isEnabled()); // cut
+	tool.getItem(9).setEnabled(menu.getItem(4).isEnabled()); // copy
+	tool.getItem(10).setEnabled(menu.getItem(5).isEnabled()); // paste
+	tool.getItem(11).setEnabled(menu.getItem(6).isEnabled()); // delete
+    }
 }

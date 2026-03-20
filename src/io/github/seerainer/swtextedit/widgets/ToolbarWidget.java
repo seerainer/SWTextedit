@@ -40,75 +40,75 @@ import io.github.seerainer.swtextedit.util.StringUtil;
  */
 public final class ToolbarWidget {
 
-	/**
-	 * Creates a new ToolBar with the given parameters.
-	 *
-	 * @param parent   The parent of the toolbar.
-	 * @param gridData The layout of the toolbar.
-	 * @param layout   The layout of the toolbar.
-	 * @return Returns the new toolbar.
-	 */
-	private static ToolBar createToolBar(final Composite parent, final GridData gridData, final GridLayout layout) {
-		final var toolBar = new ToolBar(parent, SWT.FLAT | SWT.SHADOW_OUT);
+    /** Private empty constructor. */
+    private ToolbarWidget() {
+    }
 
-		if (gridData != null) {
-			toolBar.setLayoutData(gridData);
-		}
+    /**
+     * Creates a new ToolBar with the given parameters.
+     *
+     * @param parent   The parent of the toolbar.
+     * @param gridData The layout of the toolbar.
+     * @param layout   The layout of the toolbar.
+     * @return Returns the new toolbar.
+     */
+    private static ToolBar createToolBar(final Composite parent, final GridData gridData, final GridLayout layout) {
+	final var toolBar = new ToolBar(parent, SWT.FLAT | SWT.SHADOW_OUT);
 
-		if (layout != null) {
-			toolBar.setLayout(layout);
-		}
-
-		return toolBar;
+	if (gridData != null) {
+	    toolBar.setLayoutData(gridData);
 	}
 
-	/**
-	 * Creates a new ToolItem with the given parameters.
-	 *
-	 * @param toolBar   The parent of the tool item (ToolBar).
-	 * @param image     The graphic of the item.
-	 * @param listener  The selection listener of the item.
-	 * @param toolTipID The tooltip of the item.
-	 * @return Returns the new tool item.
-	 */
-	private static ToolItem createToolItem(final ToolBar toolBar, final String image, final SelectionListener listener,
-			final String toolTipID) {
-		final var toolItem = new ToolItem(toolBar, SWT.PUSH);
-
-		if (!StringUtil.isValueEmpty(image)) {
-			toolItem.setImage(ImageUtil.newImage(toolBar.getDisplay(), image));
-			toolItem.setDisabledImage(new Image(toolBar.getDisplay(), toolItem.getImage(), SWT.IMAGE_GRAY));
-		}
-
-		if (listener != null) {
-			toolItem.addSelectionListener(listener);
-		}
-
-		if (!StringUtil.isValueEmpty(toolTipID)) {
-			toolItem.setData("TOOLTIPID", toolTipID); //$NON-NLS-1$
-		}
-
-		return toolItem;
+	if (layout != null) {
+	    toolBar.setLayout(layout);
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.ToolbarWidget#createToolBar(Composite,
-	 *      GridData, GridLayout)
-	 */
-	public static ToolBar newToolBar(final Composite parent, final GridData gridData, final GridLayout layout) {
-		return createToolBar(parent, gridData, layout);
+	return toolBar;
+    }
+
+    /**
+     * Creates a new ToolItem with the given parameters.
+     *
+     * @param toolBar   The parent of the tool item (ToolBar).
+     * @param image     The graphic of the item.
+     * @param listener  The selection listener of the item.
+     * @param toolTipID The tooltip of the item.
+     * @return Returns the new tool item.
+     */
+    private static ToolItem createToolItem(final ToolBar toolBar, final String image, final SelectionListener listener,
+	    final String toolTipID) {
+	final var toolItem = new ToolItem(toolBar, SWT.PUSH);
+
+	if (!StringUtil.isValueEmpty(image)) {
+	    toolItem.setImage(ImageUtil.newImage(toolBar.getDisplay(), image));
+	    toolItem.setDisabledImage(new Image(toolBar.getDisplay(), toolItem.getImage(), SWT.IMAGE_GRAY));
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.ToolbarWidget#createToolItem(ToolBar,
-	 *      String, SelectionListener, String)
-	 */
-	public static ToolItem newToolItem(final ToolBar toolBar, final String image, final SelectionListener listener,
-			final String toolTipID) {
-		return createToolItem(toolBar, image, listener, toolTipID);
+	if (listener != null) {
+	    toolItem.addSelectionListener(listener);
 	}
 
-	/** Private empty constructor. */
-	private ToolbarWidget() {
+	if (!StringUtil.isValueEmpty(toolTipID)) {
+	    toolItem.setData("TOOLTIPID", toolTipID); //$NON-NLS-1$
 	}
+
+	return toolItem;
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.ToolbarWidget#createToolBar(Composite,
+     *      GridData, GridLayout)
+     */
+    public static ToolBar newToolBar(final Composite parent, final GridData gridData, final GridLayout layout) {
+	return createToolBar(parent, gridData, layout);
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.ToolbarWidget#createToolItem(ToolBar,
+     *      String, SelectionListener, String)
+     */
+    public static ToolItem newToolItem(final ToolBar toolBar, final String image, final SelectionListener listener,
+	    final String toolTipID) {
+	return createToolItem(toolBar, image, listener, toolTipID);
+    }
 }

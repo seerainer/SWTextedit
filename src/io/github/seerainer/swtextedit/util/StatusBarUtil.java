@@ -32,51 +32,51 @@ import org.eclipse.swt.widgets.Label;
  */
 public final class StatusBarUtil {
 
-	/**
-	 * Output some information about the text in the status bar.
-	 *
-	 * @param lab1    The filename of the text.
-	 * @param lab2    The insert / overwrite state.
-	 * @param lab3    The position of the cursor and the amount of characters in the
-	 *                text.
-	 * @param lab4    The position of the row and column.
-	 * @param lab5    The amount of selected text.
-	 * @param keycode The key which was pressed.
-	 * @param text    The text widget where you get the information.
-	 * @param file    The path and name of the file in the text widget.
-	 */
-	public static void status(final Label lab1, final Label lab2, final Label lab3, final Label lab4, final Label lab5,
-			final int keycode, final StyledText text, final String file) {
+    /** Private empty constructor. */
+    private StatusBarUtil() {
+    }
 
-		final var caretOffset = text.getCaretOffset();
+    /**
+     * Output some information about the text in the status bar.
+     *
+     * @param lab1    The filename of the text.
+     * @param lab2    The insert / overwrite state.
+     * @param lab3    The position of the cursor and the amount of characters in the
+     *                text.
+     * @param lab4    The position of the row and column.
+     * @param lab5    The amount of selected text.
+     * @param keycode The key which was pressed.
+     * @param text    The text widget where you get the information.
+     * @param file    The path and name of the file in the text widget.
+     */
+    public static void status(final Label lab1, final Label lab2, final Label lab3, final Label lab4, final Label lab5,
+	    final int keycode, final StyledText text, final String file) {
 
-		if (file == null) {
-			lab1.setText(""); //$NON-NLS-1$
-		} else {
-			lab1.setText(file);
-		}
+	final var caretOffset = text.getCaretOffset();
 
-		if (keycode == SWT.INSERT) {
-			if ("INS".equals(lab2.getText())) { //$NON-NLS-1$
-				lab2.setText("OVR"); //$NON-NLS-1$
-			} else {
-				lab2.setText("INS"); //$NON-NLS-1$
-			}
-		}
-
-		lab3.setText(caretOffset + " / " + text.getCharCount()); //$NON-NLS-1$
-		lab4.setText((text.getLineAtOffset(caretOffset) + 1) + " / " //$NON-NLS-1$
-				+ (caretOffset - text.getOffsetAtLine(text.getLineAtOffset(caretOffset)) + 1));
-		lab5.setText(Integer.toString(text.getSelectionCount()));
-
-		lab1.setToolTipText(lab1.getText());
-		lab2.setToolTipText(lab2.getText());
-		lab3.setToolTipText(lab3.getText());
-		lab4.setToolTipText(lab4.getText());
-		lab5.setToolTipText(lab5.getText());
+	if (file == null) {
+	    lab1.setText(""); //$NON-NLS-1$
+	} else {
+	    lab1.setText(file);
 	}
 
-	/** Private empty constructor. */
-	private StatusBarUtil() {
+	if (keycode == SWT.INSERT) {
+	    if ("INS".equals(lab2.getText())) { //$NON-NLS-1$
+		lab2.setText("OVR"); //$NON-NLS-1$
+	    } else {
+		lab2.setText("INS"); //$NON-NLS-1$
+	    }
 	}
+
+	lab3.setText(new StringBuilder().append(caretOffset).append(" / ").append(text.getCharCount()).toString()); //$NON-NLS-1$
+	lab4.setText(new StringBuilder().append(text.getLineAtOffset(caretOffset) + 1).append(" / " //$NON-NLS-1$
+	).append(caretOffset - text.getOffsetAtLine(text.getLineAtOffset(caretOffset)) + 1).toString());
+	lab5.setText(Integer.toString(text.getSelectionCount()));
+
+	lab1.setToolTipText(lab1.getText());
+	lab2.setToolTipText(lab2.getText());
+	lab3.setToolTipText(lab3.getText());
+	lab4.setToolTipText(lab4.getText());
+	lab5.setToolTipText(lab5.getText());
+    }
 }

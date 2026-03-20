@@ -35,46 +35,46 @@ import io.github.seerainer.swtextedit.util.StringUtil;
  */
 public final class GroupWidget {
 
-	/**
-	 * Creates a new Group with the given parameters.
-	 *
-	 * @param parent     The parent of the new group.
-	 * @param style      The style of the new group.
-	 * @param gridData   The layout of the group (GridData).
-	 * @param gridLayout The layout of the widgets in the group (GridLayout).
-	 * @param textID     The text of the group.
-	 * @return Returns the new group.
-	 */
-	private static Group createGroup(final Composite parent, final int style, final GridData gridData,
-			final GridLayout gridLayout, final String textID) {
-		final var group = new Group(parent, style);
-		group.setForeground(parent.getForeground());
+    /** Private empty constructor. */
+    private GroupWidget() {
+    }
 
-		if (gridData != null) {
-			group.setLayoutData(gridData);
-		}
+    /**
+     * Creates a new Group with the given parameters.
+     *
+     * @param parent     The parent of the new group.
+     * @param style      The style of the new group.
+     * @param gridData   The layout of the group (GridData).
+     * @param gridLayout The layout of the widgets in the group (GridLayout).
+     * @param textID     The text of the group.
+     * @return Returns the new group.
+     */
+    private static Group createGroup(final Composite parent, final int style, final GridData gridData,
+	    final GridLayout gridLayout, final String textID) {
+	final var group = new Group(parent, style);
+	group.setForeground(parent.getForeground());
 
-		if (gridLayout != null) {
-			group.setLayout(gridLayout);
-		}
-
-		if (!StringUtil.isValueEmpty(textID)) {
-			group.setData("TEXTID", textID); //$NON-NLS-1$
-		}
-
-		return group;
+	if (gridData != null) {
+	    group.setLayoutData(gridData);
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.GroupWidget#createGroup(Composite,
-	 *      int, GridData, GridLayout, String)
-	 */
-	public static Group newGroup(final Composite parent, final int style, final GridData gridData,
-			final GridLayout gridLayout, final String textID) {
-		return createGroup(parent, style, gridData, gridLayout, textID);
+	if (gridLayout != null) {
+	    group.setLayout(gridLayout);
 	}
 
-	/** Private empty constructor. */
-	private GroupWidget() {
+	if (!StringUtil.isValueEmpty(textID)) {
+	    group.setData("TEXTID", textID); //$NON-NLS-1$
 	}
+
+	return group;
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.GroupWidget#createGroup(Composite,
+     *      int, GridData, GridLayout, String)
+     */
+    public static Group newGroup(final Composite parent, final int style, final GridData gridData,
+	    final GridLayout gridLayout, final String textID) {
+	return createGroup(parent, style, gridData, gridLayout, textID);
+    }
 }

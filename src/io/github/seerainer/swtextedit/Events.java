@@ -66,388 +66,389 @@ import io.github.seerainer.swtextedit.widgets.FontDialogWidget;
  */
 public final class Events {
 
-	private Widgets widgets;
+    private Widgets widgets;
 
-	/** Instance of the Find/Replace Dialog. */
-	private FindReplace findReplace;
+    /** Instance of the Find/Replace Dialog. */
+    private FindReplace findReplace;
 
-	/** Instances for the undo / redo function. */
-	private final List<UndoUtil> undoStack = new LinkedList<>();
+    /** Instances for the undo / redo function. */
+    private final List<UndoUtil> undoStack = new LinkedList<>();
 
-	/**
-	 * Instances for the undo / redo function.
-	 */
-	private final List<UndoUtil> redoStack = new LinkedList<>();
+    /**
+     * Instances for the undo / redo function.
+     */
+    private final List<UndoUtil> redoStack = new LinkedList<>();
 
-	/** Listener for the undo / redo function. */
-	ExtendedModifyListener undoredo = e -> {
-		redoStack.clear();
-		final var stackSize = widgets.getConfigData().getUndoStackSize();
-		final var newText = widgets.getStyledText().getText().substring(e.start, e.start + e.length);
-		final var newTextValue = !StringUtil.isValueEmpty(newText);
-		if (e.replacedText.length() > 0) {
-			if (undoStack.size() == stackSize) {
-				undoStack.remove(undoStack.size() - 1);
-			}
-			if (newTextValue) {
-				undoStack.add(0, new UndoUtil(e.replacedText, e.replacedText.length() > 0,
-						widgets.getStyledText().getCaretOffset() - newText.length()));
-				if (undoStack.size() == stackSize) {
-					undoStack.remove(undoStack.size() - 1);
-				}
-				undoStack.add(0, new UndoUtil(newText, false, widgets.getStyledText().getCaretOffset()));
-			} else {
-				undoStack.add(0, new UndoUtil(e.replacedText, e.replacedText.length() > 0,
-						widgets.getStyledText().getCaretOffset()));
-			}
-		} else if (newTextValue) {
-			if (undoStack.size() == stackSize) {
-				undoStack.remove(undoStack.size() - 1);
-			}
-			undoStack.add(0, new UndoUtil(newText, false, widgets.getStyledText().getCaretOffset()));
+    /** Listener for the undo / redo function. */
+    ExtendedModifyListener undoredo = e -> {
+	redoStack.clear();
+	final var stackSize = widgets.getConfigData().getUndoStackSize();
+	final var newText = widgets.getStyledText().getText().substring(e.start, e.start + e.length);
+	final var newTextValue = !StringUtil.isValueEmpty(newText);
+	if (e.replacedText.length() > 0) {
+	    if (undoStack.size() == stackSize) {
+		undoStack.remove(undoStack.size() - 1);
+	    }
+	    if (newTextValue) {
+		undoStack.add(0, new UndoUtil(e.replacedText, e.replacedText.length() > 0,
+			widgets.getStyledText().getCaretOffset() - newText.length()));
+		if (undoStack.size() == stackSize) {
+		    undoStack.remove(undoStack.size() - 1);
 		}
-	};
+		undoStack.add(0, new UndoUtil(newText, false, widgets.getStyledText().getCaretOffset()));
+	    } else {
+		undoStack.add(0, new UndoUtil(e.replacedText, e.replacedText.length() > 0,
+			widgets.getStyledText().getCaretOffset()));
+	    }
+	} else if (newTextValue) {
+	    if (undoStack.size() == stackSize) {
+		undoStack.remove(undoStack.size() - 1);
+	    }
+	    undoStack.add(0, new UndoUtil(newText, false, widgets.getStyledText().getCaretOffset()));
+	}
+    };
 
-	/** Listener if a key is pressed. */
-	KeyListener keyPressed = keyPressedAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), e.keyCode, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
+    /** Listener if a key is pressed. */
+    KeyListener keyPressed = keyPressedAdapter(e -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), e.keyCode, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
 
-	/** Listener if a key is released. */
-	KeyListener keyReleased = keyReleasedAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
+    /** Listener if a key is released. */
+    KeyListener keyReleased = keyReleasedAdapter(_ -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
 
-	/** Listener for the file menu to enable or disable. */
-	MenuListener enableSaveItem = menuShownAdapter(
-			e -> widgets.getFileMenu().getItem(2).setEnabled(widgets.getConfigData().isHasChanged()));
+    /** Listener for the file menu to enable or disable. */
+    MenuListener enableSaveItem = menuShownAdapter(
+	    _ -> widgets.getFileMenu().getItem(2).setEnabled(widgets.getConfigData().isHasChanged()));
 
-	/** Listener for the edit menu to enable or disable. */
-	MenuListener enableEditItems = menuShownAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		ItemUtil.enableMenuItems(widgets.getEditPopup(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-	});
+    /** Listener for the edit menu to enable or disable. */
+    MenuListener enableEditItems = menuShownAdapter(_ -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	ItemUtil.enableMenuItems(widgets.getEditPopup(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+    });
 
-	/** Listener for modifying the text. */
-	ModifyListener textChanged = e -> {
-		if (!widgets.getConfigData().isHasChanged()) {
-			widgets.getConfigData().setHasChanged(true);
-			widgets.getFileMenu().getItem(2).setEnabled(true);
+    /** Listener for modifying the text. */
+    ModifyListener textChanged = _ -> {
+	if (!widgets.getConfigData().isHasChanged()) {
+	    widgets.getConfigData().setHasChanged(true);
+	    widgets.getFileMenu().getItem(2).setEnabled(true);
+	}
+    };
+
+    /** Listener if a mouse key is pressed. */
+    MouseListener mousePressed = mouseDownAdapter(_ -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener if a mouse key is released. */
+    MouseListener mouseReleased = mouseUpAdapter(_ -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for a new textfile. */
+    SelectionListener newFile = widgetSelectedAdapter(_ -> {
+	if (widgets.getConfigData().isHasChanged()) {
+	    final var state = FileDialogWidget.saveYesNoCancel(widgets.getShell(), widgets.getConfigData());
+
+	    if (state == SWT.YES) {
+		if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
+			widgets.getStyledText())) {
+		    clearData(true);
 		}
-	};
+	    } else if (state == SWT.NO) {
+		clearData(true);
+	    }
+	} else {
+	    clearData(true);
+	}
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
 
-	/** Listener if a mouse key is pressed. */
-	MouseListener mousePressed = mouseDownAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
+    /** Listener for opening a file. */
+    SelectionListener open = widgetSelectedAdapter(_ -> {
+	if (widgets.getConfigData().isHasChanged()) {
+	    final var state = FileDialogWidget.saveYesNoCancel(widgets.getShell(), widgets.getConfigData());
 
-	/** Listener if a mouse key is released. */
-	MouseListener mouseReleased = mouseUpAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for a new textfile. */
-	SelectionListener newFile = widgetSelectedAdapter(e -> {
-		if (widgets.getConfigData().isHasChanged()) {
-			final var state = FileDialogWidget.saveYesNoCancel(widgets.getShell(), widgets.getConfigData());
-
-			if (state == SWT.YES) {
-				if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
-						widgets.getStyledText())) {
-					clearData(true);
-				}
-			} else if (state == SWT.NO) {
-				clearData(true);
-			}
-		} else {
-			clearData(true);
-		}
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for opening a file. */
-	SelectionListener open = widgetSelectedAdapter(e -> {
-		if (widgets.getConfigData().isHasChanged()) {
-			final var state = FileDialogWidget.saveYesNoCancel(widgets.getShell(), widgets.getConfigData());
-
-			if (state == SWT.YES) {
-				if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
-						widgets.getStyledText())
-						&& FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.OPEN,
-								widgets.getStyledText())) {
-					clearData(false);
-				}
-			} else if ((state == SWT.NO) && FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(),
-					SWT.OPEN, widgets.getStyledText())) {
-				clearData(false);
-			}
-		} else if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.OPEN,
+	    if (state == SWT.YES) {
+		if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
+			widgets.getStyledText())
+			&& FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.OPEN,
 				widgets.getStyledText())) {
-			clearData(false);
+		    clearData(false);
 		}
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for saving a file. */
-	SelectionListener save = widgetSelectedAdapter(e -> {
-		if (StringUtil.isValueEmpty(widgets.getConfigData().getFilename())) {
-			if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
-					widgets.getStyledText())) {
-				widgets.getConfigData().setHasChanged(false);
-			}
-		} else if (IO.save(new File(widgets.getConfigData().getFilename()), widgets.getStyledText().getText())) {
-			widgets.getConfigData().setHasChanged(false);
-		}
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for saving a file as. */
-	SelectionListener saveas = widgetSelectedAdapter(e -> {
-		if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE, widgets.getStyledText())) {
-			widgets.getConfigData().setHasChanged(false);
-		}
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for printing the textfile. */
-	SelectionListener print = widgetSelectedAdapter(
-			e -> PrintUtil.printDialog(widgets.getShell(), widgets.getStyledText()));
-
-	/** Listener for the exit button. */
-	SelectionListener exit = widgetSelectedAdapter(e -> widgets.getShell().close());
-
-	/** Listener for the undo event of the text widget. */
-	SelectionListener undo = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().removeExtendedModifyListener(undoredo);
-		UndoUtil.undo(undoStack, redoStack, widgets.getStyledText());
-		widgets.getStyledText().addExtendedModifyListener(undoredo);
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for the redo event of the text widget. */
-	SelectionListener redo = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().removeExtendedModifyListener(undoredo);
-		UndoUtil.redo(redoStack, undoStack, widgets.getStyledText());
-		widgets.getStyledText().addExtendedModifyListener(undoredo);
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for the cut event of the text widget. */
-	SelectionListener cut = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().cut();
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for the copy event of the text widget. */
-	SelectionListener copy = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().copy();
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-	});
-
-	/** Listener for the paste event of the text widget. */
-	SelectionListener paste = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().paste();
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for the delete event of the text widget. */
-	SelectionListener del = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().insert(""); //$NON-NLS-1$
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for the select all event of the text widget. */
-	SelectionListener selAll = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().selectAll();
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for the delete all event of the text widget. */
-	SelectionListener delAll = widgetSelectedAdapter(e -> {
-		widgets.getStyledText().setText(""); //$NON-NLS-1$
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for converting the text to uppercase. */
-	SelectionListener uppercase = widgetSelectedAdapter(e -> {
-		widgets.setStyledText(StringUtil.uppercase(widgets.getStyledText()));
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-	});
-
-	/** Listener for converting the text to lowercase. */
-	SelectionListener lowercase = widgetSelectedAdapter(e -> {
-		widgets.setStyledText(StringUtil.lowercase(widgets.getStyledText()));
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-	});
-
-	/** Listener for trimming leading and trailing whitespace. */
-	SelectionListener trim = widgetSelectedAdapter(e -> {
-		widgets.setStyledText(StringUtil.trim(widgets.getStyledText()));
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-	});
-
-	/** Listener for find / replace dialog. */
-	SelectionListener find = widgetSelectedAdapter(e -> {
-		if (findReplace == null || findReplace.isWidgetDisposed()) {
-			findReplace = new FindReplace(widgets.getShell(), widgets.getConfigData(), widgets.getStyledText(),
-					widgets.getEditMenu());
-		}
-		findReplace.forceActive();
-	});
-
-	/** Listener for the wrap style of the styledtext widget. */
-	SelectionListener wrap = widgetSelectedAdapter(
-			e -> TextUtil.wrap(widgets.getConfigData(), widgets.getStyledText()));
-
-	/** Listener for the font of the styledtext widget. */
-	SelectionListener font = widgetSelectedAdapter(
-			e -> FontDialogWidget.font(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
-
-	/** Listener for the background color of the styledtext widget. */
-	SelectionListener backColor = widgetSelectedAdapter(
-			e -> FontDialogWidget.backColor(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
-
-	/** Listener for the foreground color of the styledtext widget. */
-	SelectionListener foreColor = widgetSelectedAdapter(
-			e -> FontDialogWidget.foreColor(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
-
-	/** Listener for the selection background color of the styledtext widget. */
-	SelectionListener selectBackColor = widgetSelectedAdapter(
-			e -> FontDialogWidget.selectBackColor(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
-
-	/** Listener for the selection foreground color of the styledtext widget. */
-	SelectionListener selectForeColor = widgetSelectedAdapter(
-			e -> FontDialogWidget.selectForeColor(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
-
-	/** Listener for the encoding of the text. */
-	SelectionListener enc = widgetSelectedAdapter(e -> {
-		final var enc1 = ((MenuItem) e.getSource()).getText();
-		if (!CharacterEncoding.getEncoding().equals(enc1)) {
-			CharacterEncoding.setEncoding(enc1);
-		}
-	});
-
-	/** Listener for the language of the program. */
-	SelectionListener lang = widgetSelectedAdapter(e -> {
-		var lang1 = (String) e.widget.getData("TEXTID"); //$NON-NLS-1$
-		lang1 = lang1.substring(lang1.length() - 2).toUpperCase();
-		if (!widgets.getConfigData().getLanguage().equals(lang1)) {
-			widgets.getConfigData().setLanguage(lang1);
-			LangUtil.setLang(widgets.getWidgets(), widgets.getConfigData());
-		}
-	});
-
-	/** Listener for the system info message box. */
-	SelectionListener systemconfig = widgetSelectedAdapter(
-			e -> new SystemProperties(widgets.getShell(), widgets.getConfigData()));
-
-	/** Listener for the about dialog. */
-	SelectionListener about = widgetSelectedAdapter(e -> new About(widgets.getShell(), widgets.getConfigData()));
-
-	/** Listener for the selection of the text widget. */
-	SelectionListener selectText = widgetSelectedAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener if the shell gets the focus. */
-	ShellListener shellFocus = shellActivatedAdapter(e -> {
-		ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
-				widgets.getStyledText(), undoStack, redoStack);
-		widgets.getFileMenu().getItem(2).setEnabled(widgets.getConfigData().isHasChanged());
-		StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
-				widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
-	});
-
-	/** Listener for closing the shell. */
-	ShellListener shellExit = shellClosedAdapter(e -> {
-		if (widgets.getConfigData().isHasChanged()) {
-			e.doit = switch (FileDialogWidget.saveYesNoCancel(widgets.getShell(), widgets.getConfigData())) {
-			case SWT.YES -> FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
-					widgets.getStyledText());
-			case SWT.NO -> true;
-			default -> false;
-			};
-		} else {
-			e.doit = true;
-		}
-
-	});
-
-	/**
-	 * Default Constructor of Events.
-	 *
-	 * @param widgets Instance of Widgets.
-	 */
-	Events(final Widgets widgets) {
-		this.widgets = widgets;
+	    } else if ((state == SWT.NO) && FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(),
+		    SWT.OPEN, widgets.getStyledText())) {
+		clearData(false);
+	    }
+	} else if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.OPEN,
+		widgets.getStyledText())) {
+	    clearData(false);
 	}
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
 
-	/**
-	 * Reset all values for a new file.
-	 *
-	 * @param untitled True for a new untitled text file.
-	 */
-	private void clearData(final boolean untitled) {
-		if (untitled) {
-			widgets.getStyledText().setText(""); //$NON-NLS-1$
-			widgets.getConfigData().setFilename(null);
-		}
+    /** Listener for saving a file. */
+    SelectionListener save = widgetSelectedAdapter(_ -> {
+	if (StringUtil.isValueEmpty(widgets.getConfigData().getFilename())) {
+	    if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
+		    widgets.getStyledText())) {
 		widgets.getConfigData().setHasChanged(false);
-		undoStack.clear();
-		redoStack.clear();
+	    }
+	} else if (IO.save(new File(widgets.getConfigData().getFilename()), widgets.getStyledText().getText())) {
+	    widgets.getConfigData().setHasChanged(false);
 	}
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for saving a file as. */
+    SelectionListener saveas = widgetSelectedAdapter(_ -> {
+	if (FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
+		widgets.getStyledText())) {
+	    widgets.getConfigData().setHasChanged(false);
+	}
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for printing the textfile. */
+    SelectionListener print = widgetSelectedAdapter(
+	    _ -> PrintUtil.printDialog(widgets.getShell(), widgets.getStyledText()));
+
+    /** Listener for the exit button. */
+    SelectionListener exit = widgetSelectedAdapter(_ -> widgets.getShell().close());
+
+    /** Listener for the undo event of the text widget. */
+    SelectionListener undo = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().removeExtendedModifyListener(undoredo);
+	UndoUtil.undo(undoStack, redoStack, widgets.getStyledText());
+	widgets.getStyledText().addExtendedModifyListener(undoredo);
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for the redo event of the text widget. */
+    SelectionListener redo = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().removeExtendedModifyListener(undoredo);
+	UndoUtil.redo(redoStack, undoStack, widgets.getStyledText());
+	widgets.getStyledText().addExtendedModifyListener(undoredo);
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for the cut event of the text widget. */
+    SelectionListener cut = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().cut();
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for the copy event of the text widget. */
+    SelectionListener copy = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().copy();
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+    });
+
+    /** Listener for the paste event of the text widget. */
+    SelectionListener paste = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().paste();
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for the delete event of the text widget. */
+    SelectionListener del = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().insert(""); //$NON-NLS-1$
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for the select all event of the text widget. */
+    SelectionListener selAll = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().selectAll();
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for the delete all event of the text widget. */
+    SelectionListener delAll = widgetSelectedAdapter(_ -> {
+	widgets.getStyledText().setText(""); //$NON-NLS-1$
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for converting the text to uppercase. */
+    SelectionListener uppercase = widgetSelectedAdapter(_ -> {
+	widgets.setStyledText(StringUtil.uppercase(widgets.getStyledText()));
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+    });
+
+    /** Listener for converting the text to lowercase. */
+    SelectionListener lowercase = widgetSelectedAdapter(_ -> {
+	widgets.setStyledText(StringUtil.lowercase(widgets.getStyledText()));
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+    });
+
+    /** Listener for trimming leading and trailing whitespace. */
+    SelectionListener trim = widgetSelectedAdapter(_ -> {
+	widgets.setStyledText(StringUtil.trim(widgets.getStyledText()));
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+    });
+
+    /** Listener for find / replace dialog. */
+    SelectionListener find = widgetSelectedAdapter(_ -> {
+	if (findReplace == null || findReplace.isWidgetDisposed()) {
+	    findReplace = new FindReplace(widgets.getShell(), widgets.getConfigData(), widgets.getStyledText(),
+		    widgets.getEditMenu());
+	}
+	findReplace.forceActive();
+    });
+
+    /** Listener for the wrap style of the styledtext widget. */
+    SelectionListener wrap = widgetSelectedAdapter(
+	    _ -> TextUtil.wrap(widgets.getConfigData(), widgets.getStyledText()));
+
+    /** Listener for the font of the styledtext widget. */
+    SelectionListener font = widgetSelectedAdapter(
+	    _ -> FontDialogWidget.font(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
+
+    /** Listener for the background color of the styledtext widget. */
+    SelectionListener backColor = widgetSelectedAdapter(
+	    _ -> FontDialogWidget.backColor(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
+
+    /** Listener for the foreground color of the styledtext widget. */
+    SelectionListener foreColor = widgetSelectedAdapter(
+	    _ -> FontDialogWidget.foreColor(widgets.getShell(), widgets.getStyledText(), widgets.getConfigData()));
+
+    /** Listener for the selection background color of the styledtext widget. */
+    SelectionListener selectBackColor = widgetSelectedAdapter(_ -> FontDialogWidget.selectBackColor(widgets.getShell(),
+	    widgets.getStyledText(), widgets.getConfigData()));
+
+    /** Listener for the selection foreground color of the styledtext widget. */
+    SelectionListener selectForeColor = widgetSelectedAdapter(_ -> FontDialogWidget.selectForeColor(widgets.getShell(),
+	    widgets.getStyledText(), widgets.getConfigData()));
+
+    /** Listener for the encoding of the text. */
+    SelectionListener enc = widgetSelectedAdapter(e -> {
+	final var enc1 = ((MenuItem) e.getSource()).getText();
+	if (!CharacterEncoding.getEncoding().equals(enc1)) {
+	    CharacterEncoding.setEncoding(enc1);
+	}
+    });
+
+    /** Listener for the language of the program. */
+    SelectionListener lang = widgetSelectedAdapter(e -> {
+	var lang1 = (String) e.widget.getData("TEXTID"); //$NON-NLS-1$
+	lang1 = lang1.substring(lang1.length() - 2).toUpperCase();
+	if (!widgets.getConfigData().getLanguage().equals(lang1)) {
+	    widgets.getConfigData().setLanguage(lang1);
+	    LangUtil.setLang(widgets.getWidgets(), widgets.getConfigData());
+	}
+    });
+
+    /** Listener for the system info message box. */
+    SelectionListener systemconfig = widgetSelectedAdapter(
+	    _ -> new SystemProperties(widgets.getShell(), widgets.getConfigData()));
+
+    /** Listener for the about dialog. */
+    SelectionListener about = widgetSelectedAdapter(_ -> new About(widgets.getShell(), widgets.getConfigData()));
+
+    /** Listener for the selection of the text widget. */
+    SelectionListener selectText = widgetSelectedAdapter(_ -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener if the shell gets the focus. */
+    ShellListener shellFocus = shellActivatedAdapter(_ -> {
+	ItemUtil.enableMenuItems(widgets.getEditMenu(), widgets.getToolBar(), widgets.getConfigData(),
+		widgets.getStyledText(), undoStack, redoStack);
+	widgets.getFileMenu().getItem(2).setEnabled(widgets.getConfigData().isHasChanged());
+	StatusBarUtil.status(widgets.getStatus1(), widgets.getStatus2(), widgets.getStatus3(), widgets.getStatus4(),
+		widgets.getStatus5(), 0, widgets.getStyledText(), widgets.getConfigData().getFilename());
+    });
+
+    /** Listener for closing the shell. */
+    ShellListener shellExit = shellClosedAdapter(e -> {
+	if (widgets.getConfigData().isHasChanged()) {
+	    e.doit = switch (FileDialogWidget.saveYesNoCancel(widgets.getShell(), widgets.getConfigData())) {
+	    case SWT.YES -> FileDialogWidget.fileDialog(widgets.getShell(), widgets.getConfigData(), SWT.SAVE,
+		    widgets.getStyledText());
+	    case SWT.NO -> true;
+	    default -> false;
+	    };
+	} else {
+	    e.doit = true;
+	}
+
+    });
+
+    /**
+     * Default Constructor of Events.
+     *
+     * @param widgets Instance of Widgets.
+     */
+    Events(final Widgets widgets) {
+	this.widgets = widgets;
+    }
+
+    /**
+     * Reset all values for a new file.
+     *
+     * @param untitled True for a new untitled text file.
+     */
+    private void clearData(final boolean untitled) {
+	if (untitled) {
+	    widgets.getStyledText().setText(""); //$NON-NLS-1$
+	    widgets.getConfigData().setFilename(null);
+	}
+	widgets.getConfigData().setHasChanged(false);
+	undoStack.clear();
+	redoStack.clear();
+    }
 }

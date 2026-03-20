@@ -32,45 +32,45 @@ import org.eclipse.swt.widgets.Text;
  */
 public final class TextWidget {
 
-	/**
-	 * Creates a new Text with the given parameters.
-	 *
-	 * @param parent   The parent of the text.
-	 * @param style    The style of the text.
-	 * @param gridData The layout of the text.
-	 * @param focus    If it's true the focus is set to the text widget.
-	 * @param editAble True if the text is edit able or false if it's otherwise.
-	 * @return Returns of the text.
-	 */
-	private static Text createText(final Composite parent, final int style, final GridData gridData,
-			final boolean focus, final boolean editAble) {
-		final var text = new Text(parent, style);
+    /** Private empty constructor. */
+    private TextWidget() {
+    }
 
-		if (gridData != null) {
-			text.setLayoutData(gridData);
-		}
+    /**
+     * Creates a new Text with the given parameters.
+     *
+     * @param parent   The parent of the text.
+     * @param style    The style of the text.
+     * @param gridData The layout of the text.
+     * @param focus    If it's true the focus is set to the text widget.
+     * @param editAble True if the text is edit able or false if it's otherwise.
+     * @return Returns of the text.
+     */
+    private static Text createText(final Composite parent, final int style, final GridData gridData,
+	    final boolean focus, final boolean editAble) {
+	final var text = new Text(parent, style);
 
-		if (focus) {
-			text.setFocus();
-		}
-
-		if (!editAble) {
-			text.setEditable(editAble);
-		}
-
-		return text;
+	if (gridData != null) {
+	    text.setLayoutData(gridData);
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.TextWidget#createText(Composite,
-	 *      int, GridData, boolean, boolean)
-	 */
-	public static Text newText(final Composite parent, final int style, final GridData gridData, final boolean focus,
-			final boolean editAble) {
-		return createText(parent, style, gridData, focus, editAble);
+	if (focus) {
+	    text.setFocus();
 	}
 
-	/** Private empty constructor. */
-	private TextWidget() {
+	if (!editAble) {
+	    text.setEditable(editAble);
 	}
+
+	return text;
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.TextWidget#createText(Composite,
+     *      int, GridData, boolean, boolean)
+     */
+    public static Text newText(final Composite parent, final int style, final GridData gridData, final boolean focus,
+	    final boolean editAble) {
+	return createText(parent, style, gridData, focus, editAble);
+    }
 }

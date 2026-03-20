@@ -30,29 +30,33 @@ import java.nio.charset.Charset;
  */
 public final class CharacterEncoding {
 
-	public static final String ASCII = "US-ASCII"; //$NON-NLS-1$
+    public static final String ASCII = "US-ASCII"; //$NON-NLS-1$
 
-	public static final String ISO = "ISO-8859-1"; //$NON-NLS-1$
+    public static final String ISO = "ISO-8859-1"; //$NON-NLS-1$
 
-	public static final String UTF8 = "UTF-8"; //$NON-NLS-1$
+    public static final String UTF8 = "UTF-8"; //$NON-NLS-1$
 
-	public static final String UTF16BE = "UTF-16BE"; //$NON-NLS-1$
+    public static final String UTF16BE = "UTF-16BE"; //$NON-NLS-1$
 
-	public static final String UTF16LE = "UTF-16LE"; //$NON-NLS-1$
+    public static final String UTF16LE = "UTF-16LE"; //$NON-NLS-1$
 
-	public static final String UTF16 = "UTF-16"; //$NON-NLS-1$
+    public static final String UTF16 = "UTF-16"; //$NON-NLS-1$
 
-	/**
-	 * @return Return encoding.
-	 */
-	public static String getEncoding() {
-		return Charset.defaultCharset().displayName();
-	}
+    private CharacterEncoding() {
+	throw new IllegalStateException("Utility class");
+    }
 
-	/**
-	 * @param encoding Set encoding.
-	 */
-	public static void setEncoding(final String encoding) {
-		System.setProperty("file.encoding", encoding); //$NON-NLS-1$
-	}
+    /**
+     * @return Return encoding.
+     */
+    public static String getEncoding() {
+	return Charset.defaultCharset().displayName();
+    }
+
+    /**
+     * @param encoding Set encoding.
+     */
+    public static void setEncoding(final String encoding) {
+	System.setProperty("file.encoding", encoding); //$NON-NLS-1$
+    }
 }

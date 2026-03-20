@@ -38,117 +38,117 @@ import io.github.seerainer.swtextedit.config.ConfigData;
  */
 public final class FontDialogWidget {
 
-	/** Instance of the color dialog. */
-	private static ColorDialog colorDialog;
+    /** Instance of the color dialog. */
+    private static ColorDialog colorDialog;
 
-	/** Instance of default additive color model. */
-	private static RGB rgb;
+    /** Instance of default additive color model. */
+    private static RGB rgb;
 
-	/**
-	 * Dialog for the background color of the styled text.
-	 *
-	 * @param parent     The parent of the dialog.
-	 * @param text       The text widget where the background color should be
-	 *                   changed.
-	 * @param configData The configuration data of the GUI.
-	 */
-	public static void backColor(final Shell parent, final StyledText text, final ConfigData configData) {
-		colorDialog = new ColorDialog(parent);
-		colorDialog.setRGB(configData.getBackgroundColor().getRGB());
-		rgb = colorDialog.open();
+    /** Private empty constructor. */
+    private FontDialogWidget() {
+    }
 
-		if (rgb == null) {
-			return;
-		}
+    /**
+     * Dialog for the background color of the styled text.
+     *
+     * @param parent     The parent of the dialog.
+     * @param text       The text widget where the background color should be
+     *                   changed.
+     * @param configData The configuration data of the GUI.
+     */
+    public static void backColor(final Shell parent, final StyledText text, final ConfigData configData) {
+	colorDialog = new ColorDialog(parent);
+	colorDialog.setRGB(configData.getBackgroundColor().getRGB());
+	rgb = colorDialog.open();
 
-		configData.setBackgroundColor(new Color(parent.getDisplay(), rgb));
-		text.setBackground(configData.getBackgroundColor());
+	if (rgb == null) {
+	    return;
 	}
 
-	/**
-	 * Dialog for the font of the styled text.
-	 *
-	 * @param parent     The parent of the dialog.
-	 * @param text       The text widget where the font should be changed.
-	 * @param configData The configuration data of the GUI.
-	 */
-	public static void font(final Shell parent, final StyledText text, final ConfigData configData) {
-		final var fontDialog = new FontDialog(parent);
-		fontDialog.setFontList(configData.getFont().getFontData());
-		final var fontData = fontDialog.open();
+	configData.setBackgroundColor(new Color(parent.getDisplay(), rgb));
+	text.setBackground(configData.getBackgroundColor());
+    }
 
-		if (fontData == null) {
-			return;
-		}
+    /**
+     * Dialog for the font of the styled text.
+     *
+     * @param parent     The parent of the dialog.
+     * @param text       The text widget where the font should be changed.
+     * @param configData The configuration data of the GUI.
+     */
+    public static void font(final Shell parent, final StyledText text, final ConfigData configData) {
+	final var fontDialog = new FontDialog(parent);
+	fontDialog.setFontList(configData.getFont().getFontData());
+	final var fontData = fontDialog.open();
 
-		configData.setFont(new Font(parent.getDisplay(), fontData));
-		text.setFont(configData.getFont());
+	if (fontData == null) {
+	    return;
 	}
 
-	/**
-	 * Dialog for the foreground color of the styled text.
-	 *
-	 * @param parent     The parent of the dialog.
-	 * @param text       The text widget where the foreground color should be
-	 *                   changed.
-	 * @param configData The configuration data of the GUI.
-	 */
-	public static void foreColor(final Shell parent, final StyledText text, final ConfigData configData) {
-		colorDialog = new ColorDialog(parent);
-		colorDialog.setRGB(configData.getForegroundColor().getRGB());
-		rgb = colorDialog.open();
+	configData.setFont(new Font(parent.getDisplay(), fontData));
+	text.setFont(configData.getFont());
+    }
 
-		if (rgb == null) {
-			return;
-		}
+    /**
+     * Dialog for the foreground color of the styled text.
+     *
+     * @param parent     The parent of the dialog.
+     * @param text       The text widget where the foreground color should be
+     *                   changed.
+     * @param configData The configuration data of the GUI.
+     */
+    public static void foreColor(final Shell parent, final StyledText text, final ConfigData configData) {
+	colorDialog = new ColorDialog(parent);
+	colorDialog.setRGB(configData.getForegroundColor().getRGB());
+	rgb = colorDialog.open();
 
-		configData.setForegroundColor(new Color(parent.getDisplay(), rgb));
-		text.setForeground(configData.getForegroundColor());
+	if (rgb == null) {
+	    return;
 	}
 
-	/**
-	 * Dialog for the selection background color of the styled text.
-	 *
-	 * @param parent     The parent of the dialog.
-	 * @param text       The text widget where the background color should be
-	 *                   changed.
-	 * @param configData The configuration data of the GUI.
-	 */
-	public static void selectBackColor(final Shell parent, final StyledText text, final ConfigData configData) {
-		colorDialog = new ColorDialog(parent);
-		colorDialog.setRGB(configData.getSelectionBackground().getRGB());
-		rgb = colorDialog.open();
+	configData.setForegroundColor(new Color(parent.getDisplay(), rgb));
+	text.setForeground(configData.getForegroundColor());
+    }
 
-		if (rgb == null) {
-			return;
-		}
+    /**
+     * Dialog for the selection background color of the styled text.
+     *
+     * @param parent     The parent of the dialog.
+     * @param text       The text widget where the background color should be
+     *                   changed.
+     * @param configData The configuration data of the GUI.
+     */
+    public static void selectBackColor(final Shell parent, final StyledText text, final ConfigData configData) {
+	colorDialog = new ColorDialog(parent);
+	colorDialog.setRGB(configData.getSelectionBackground().getRGB());
+	rgb = colorDialog.open();
 
-		configData.setSelectionBackground(new Color(parent.getDisplay(), rgb));
-		text.setSelectionBackground(configData.getSelectionBackground());
+	if (rgb == null) {
+	    return;
 	}
 
-	/**
-	 * Dialog for the selection foreground color of the styled text.
-	 *
-	 * @param parent     The parent of the dialog.
-	 * @param text       The text widget where the foreground color should be
-	 *                   changed.
-	 * @param configData The configuration data of the GUI.
-	 */
-	public static void selectForeColor(final Shell parent, final StyledText text, final ConfigData configData) {
-		colorDialog = new ColorDialog(parent);
-		colorDialog.setRGB(configData.getSelectionForeground().getRGB());
-		rgb = colorDialog.open();
+	configData.setSelectionBackground(new Color(parent.getDisplay(), rgb));
+	text.setSelectionBackground(configData.getSelectionBackground());
+    }
 
-		if (rgb == null) {
-			return;
-		}
+    /**
+     * Dialog for the selection foreground color of the styled text.
+     *
+     * @param parent     The parent of the dialog.
+     * @param text       The text widget where the foreground color should be
+     *                   changed.
+     * @param configData The configuration data of the GUI.
+     */
+    public static void selectForeColor(final Shell parent, final StyledText text, final ConfigData configData) {
+	colorDialog = new ColorDialog(parent);
+	colorDialog.setRGB(configData.getSelectionForeground().getRGB());
+	rgb = colorDialog.open();
 
-		configData.setSelectionForeground(new Color(parent.getDisplay(), rgb));
-		text.setSelectionForeground(configData.getSelectionForeground());
+	if (rgb == null) {
+	    return;
 	}
 
-	/** Private empty constructor. */
-	private FontDialogWidget() {
-	}
+	configData.setSelectionForeground(new Color(parent.getDisplay(), rgb));
+	text.setSelectionForeground(configData.getSelectionForeground());
+    }
 }

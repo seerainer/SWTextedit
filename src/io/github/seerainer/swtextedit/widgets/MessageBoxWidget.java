@@ -33,40 +33,40 @@ import io.github.seerainer.swtextedit.util.StringUtil;
  */
 public final class MessageBoxWidget {
 
-	/**
-	 * Creates a new MessageBox with the given Parameters.
-	 *
-	 * @param parent  The parent of the new mb.
-	 * @param style   The style of the new mb.
-	 * @param text    The title text of the mb.
-	 * @param message The message or the question.
-	 * @return Returns the new mb.
-	 */
-	private static MessageBox createMessageBox(final Shell parent, final int style, final String text,
-			final String message) {
-		final var mb = new MessageBox(parent, style);
+    /** Private empty constructor. */
+    private MessageBoxWidget() {
+    }
 
-		if (!StringUtil.isValueEmpty(text)) {
-			mb.setText(text);
-		}
+    /**
+     * Creates a new MessageBox with the given Parameters.
+     *
+     * @param parent  The parent of the new mb.
+     * @param style   The style of the new mb.
+     * @param text    The title text of the mb.
+     * @param message The message or the question.
+     * @return Returns the new mb.
+     */
+    private static MessageBox createMessageBox(final Shell parent, final int style, final String text,
+	    final String message) {
+	final var mb = new MessageBox(parent, style);
 
-		if (!StringUtil.isValueEmpty(message)) {
-			mb.setMessage(message);
-		}
-
-		return mb;
+	if (!StringUtil.isValueEmpty(text)) {
+	    mb.setText(text);
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.MessageBoxWidget#createMessageBox(Shell,
-	 *      int, String, String)
-	 */
-	public static MessageBox newMessageBox(final Shell parent, final int style, final String text,
-			final String message) {
-		return createMessageBox(parent, style, text, message);
+	if (!StringUtil.isValueEmpty(message)) {
+	    mb.setMessage(message);
 	}
 
-	/** Private empty constructor. */
-	private MessageBoxWidget() {
-	}
+	return mb;
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.MessageBoxWidget#createMessageBox(Shell,
+     *      int, String, String)
+     */
+    public static MessageBox newMessageBox(final Shell parent, final int style, final String text,
+	    final String message) {
+	return createMessageBox(parent, style, text, message);
+    }
 }

@@ -27,17 +27,21 @@ package io.github.seerainer.swtextedit.config;
  * @author philipp@seerainer.com
  */
 public final class Icons {
-	public static final String about = "info.png"; //$NON-NLS-1$
-	public static final String copy = "copy.png"; //$NON-NLS-1$
-	public static final String cut = "cut.png"; //$NON-NLS-1$
-	public static final String del = "del.png"; //$NON-NLS-1$
-	public static final String newfile = "new.png"; //$NON-NLS-1$
-	public static final String open = "open.png"; //$NON-NLS-1$
-	public static final String paste = "paste.png"; //$NON-NLS-1$
-	public static final String print = "print.png"; //$NON-NLS-1$
-	public static final String redo = "redo.png"; //$NON-NLS-1$
-	public static final String save = "save.png"; //$NON-NLS-1$
-	public static final String search = "search.png"; //$NON-NLS-1$
-	public static final String text = "text.png"; //$NON-NLS-1$
-	public static final String undo = "undo.png"; //$NON-NLS-1$
+    public static final String about = "info.png"; //$NON-NLS-1$
+    public static final String copy = "copy.png"; //$NON-NLS-1$
+    public static final String cut = "cut.png"; //$NON-NLS-1$
+    public static final String del = "del.png"; //$NON-NLS-1$
+    public static final String newfile = "new.png"; //$NON-NLS-1$
+    public static final String open = "open.png"; //$NON-NLS-1$
+    public static final String paste = "paste.png"; //$NON-NLS-1$
+    public static final String print = "print.png"; //$NON-NLS-1$
+    public static final String redo = "redo.png"; //$NON-NLS-1$
+    public static final String save = "save.png"; //$NON-NLS-1$
+    public static final String search = "search.png"; //$NON-NLS-1$
+    public static final String text = "text.png"; //$NON-NLS-1$
+    public static final String undo = "undo.png"; //$NON-NLS-1$
+
+    private Icons() {
+	throw new IllegalStateException("Utility class");
+    }
 }

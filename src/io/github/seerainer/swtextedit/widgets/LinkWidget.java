@@ -35,47 +35,47 @@ import io.github.seerainer.swtextedit.util.StringUtil;
  */
 public final class LinkWidget {
 
-	/**
-	 * Creates a new Link with the given Parameters.
-	 *
-	 * @param parent       The parent of the new link.
-	 * @param style        The style of the new link.
-	 * @param gridData     The layout of the link (GridData).
-	 * @param textID       The text of the link.
-	 * @param linkListener The listener to open the browser with the associated
-	 *                     link.
-	 * @return Returns the new link.
-	 */
-	private static Link createLink(final Composite parent, final int style, final GridData gridData,
-			final String textID, final SelectionListener linkListener) {
-		final var link = new Link(parent, style);
-		link.setForeground(parent.getForeground());
+    /** Private empty constructor. */
+    private LinkWidget() {
+    }
 
-		if (gridData != null) {
-			link.setLayoutData(gridData);
-		}
+    /**
+     * Creates a new Link with the given Parameters.
+     *
+     * @param parent       The parent of the new link.
+     * @param style        The style of the new link.
+     * @param gridData     The layout of the link (GridData).
+     * @param textID       The text of the link.
+     * @param linkListener The listener to open the browser with the associated
+     *                     link.
+     * @return Returns the new link.
+     */
+    private static Link createLink(final Composite parent, final int style, final GridData gridData,
+	    final String textID, final SelectionListener linkListener) {
+	final var link = new Link(parent, style);
+	link.setForeground(parent.getForeground());
 
-		if (!StringUtil.isValueEmpty(textID)) {
-			link.setData("TEXTID", textID); //$NON-NLS-1$
-		}
-
-		if (linkListener != null) {
-			link.addSelectionListener(linkListener);
-		}
-
-		return link;
+	if (gridData != null) {
+	    link.setLayoutData(gridData);
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.LinkWidget#createLink(Composite,
-	 *      int, GridData, String, SelectionListener)
-	 */
-	public static Link newLink(final Composite parent, final int style, final GridData gridData, final String textID,
-			final SelectionListener linkListener) {
-		return createLink(parent, style, gridData, textID, linkListener);
+	if (!StringUtil.isValueEmpty(textID)) {
+	    link.setData("TEXTID", textID); //$NON-NLS-1$
 	}
 
-	/** Private empty constructor. */
-	private LinkWidget() {
+	if (linkListener != null) {
+	    link.addSelectionListener(linkListener);
 	}
+
+	return link;
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.LinkWidget#createLink(Composite,
+     *      int, GridData, String, SelectionListener)
+     */
+    public static Link newLink(final Composite parent, final int style, final GridData gridData, final String textID,
+	    final SelectionListener linkListener) {
+	return createLink(parent, style, gridData, textID, linkListener);
+    }
 }

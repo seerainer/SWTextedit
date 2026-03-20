@@ -102,6 +102,9 @@
       "glob": "open.png"
     },
     {
+      "glob": "org/eclipse/swt/internal/Library.class"
+    },
+    {
       "glob": "paste.gif"
     },
     {
@@ -2549,6 +2552,44 @@
         },
         {
           "name": "style"
+        }
+      ]
+    },
+    {
+      "type": "org.eclipse.swt.internal.win32.version.OSVERSIONINFOEX",
+      "fields": [
+        {
+          "name": "dwBuildNumber"
+        },
+        {
+          "name": "dwMajorVersion"
+        },
+        {
+          "name": "dwMinorVersion"
+        },
+        {
+          "name": "dwOSVersionInfoSize"
+        },
+        {
+          "name": "dwPlatformId"
+        },
+        {
+          "name": "szCSDVersion"
+        },
+        {
+          "name": "wProductType"
+        },
+        {
+          "name": "wReserved"
+        },
+        {
+          "name": "wServicePackMajor"
+        },
+        {
+          "name": "wServicePackMinor"
+        },
+        {
+          "name": "wSuiteMask"
         }
       ]
     },

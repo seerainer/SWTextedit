@@ -32,100 +32,100 @@ import org.eclipse.swt.layout.GridLayout;
  */
 public final class Grid {
 
-	/**
-	 * Creates a new GridData with the given Parameters.
-	 *
-	 * @param hAlign Specifies the horizontal align.
-	 * @param vAlign Specifies the vertical align.
-	 * @param hSpace Specifies the horizontal space.
-	 * @param vSpace Specifies the vertical space.
-	 * @param hSpan  Specifies the number of column cells that will take up.
-	 * @param vSpan  Specifies the number of rows that will take up.
-	 * @param wHint  Specifies the preferred width in pixels.
-	 * @param hHint  Specifies the preferred height in pixels.
-	 * @return Returns the new gridData.
-	 */
-	private static GridData createGridData(final int hAlign, final int vAlign, final boolean hSpace,
-			final boolean vSpace, final int hSpan, final int vSpan, final int wHint, final int hHint) {
-		final var gridData = new GridData(hAlign, vAlign, hSpace, vSpace, hSpan, vSpan);
+    /** Private empty constructor. */
+    private Grid() {
+    }
 
-		if (wHint > -1) {
-			gridData.widthHint = wHint;
-		}
+    /**
+     * Creates a new GridData with the given Parameters.
+     *
+     * @param hAlign Specifies the horizontal align.
+     * @param vAlign Specifies the vertical align.
+     * @param hSpace Specifies the horizontal space.
+     * @param vSpace Specifies the vertical space.
+     * @param hSpan  Specifies the number of column cells that will take up.
+     * @param vSpan  Specifies the number of rows that will take up.
+     * @param wHint  Specifies the preferred width in pixels.
+     * @param hHint  Specifies the preferred height in pixels.
+     * @return Returns the new gridData.
+     */
+    private static GridData createGridData(final int hAlign, final int vAlign, final boolean hSpace,
+	    final boolean vSpace, final int hSpan, final int vSpan, final int wHint, final int hHint) {
+	final var gridData = new GridData(hAlign, vAlign, hSpace, vSpace, hSpan, vSpan);
 
-		if (hHint > -1) {
-			gridData.heightHint = hHint;
-		}
-
-		return gridData;
+	if (wHint > -1) {
+	    gridData.widthHint = wHint;
 	}
 
-	/**
-	 * Creates a new GridLayout with the given Parameters.
-	 *
-	 * @param nColumns Specifies the number of cell columns in the layout.
-	 * @param equal    Specifies whether all columns will have the same width.
-	 * @param wMargin  Specifies the horizontal margin.
-	 * @param hMargin  Specifies the vertical margin.
-	 * @param hSpace   Specifies the horizontal space. (opposite of GridData)
-	 * @param vSpace   Specifies the vertical space. (opposite of GridData)
-	 * @return Returns the new gridLayout.
-	 */
-	private static GridLayout createGridLayout(final int wMargin, final int hMargin, final int hSpace, final int vSpace,
-			final int nColumns, final boolean equal) {
-		final var gridLayout = new GridLayout(nColumns, equal);
-		gridLayout.marginWidth = wMargin;
-		gridLayout.marginHeight = hMargin;
-		gridLayout.horizontalSpacing = hSpace;
-		gridLayout.verticalSpacing = vSpace;
-		gridLayout.marginTop = -2;
-
-		return gridLayout;
+	if (hHint > -1) {
+	    gridData.heightHint = hHint;
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
-	 *      boolean, boolean, int, int, int, int)
-	 */
-	public static GridData newGridData() {
-		return createGridData(SWT.FILL, SWT.FILL, true, false, 1, 1, -1, -1);
-	}
+	return gridData;
+    }
 
-	/**
-	 * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
-	 *      boolean, boolean, int, int, int, int)
-	 */
-	public static GridData newGridData(final boolean hSpace, final boolean vSpace) {
-		return createGridData(SWT.FILL, SWT.FILL, hSpace, vSpace, 1, 1, -1, -1);
-	}
+    /**
+     * Creates a new GridLayout with the given Parameters.
+     *
+     * @param nColumns Specifies the number of cell columns in the layout.
+     * @param equal    Specifies whether all columns will have the same width.
+     * @param wMargin  Specifies the horizontal margin.
+     * @param hMargin  Specifies the vertical margin.
+     * @param hSpace   Specifies the horizontal space. (opposite of GridData)
+     * @param vSpace   Specifies the vertical space. (opposite of GridData)
+     * @return Returns the new gridLayout.
+     */
+    private static GridLayout createGridLayout(final int wMargin, final int hMargin, final int hSpace, final int vSpace,
+	    final int nColumns, final boolean equal) {
+	final var gridLayout = new GridLayout(nColumns, equal);
+	gridLayout.marginWidth = wMargin;
+	gridLayout.marginHeight = hMargin;
+	gridLayout.horizontalSpacing = hSpace;
+	gridLayout.verticalSpacing = vSpace;
+	gridLayout.marginTop = -2;
 
-	/**
-	 * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
-	 *      boolean, boolean, int, int, int, int)
-	 */
-	public static GridData newGridData(final int hSpan, final int vSpan) {
-		return createGridData(SWT.FILL, SWT.FILL, true, false, hSpan, vSpan, -1, -1);
-	}
+	return gridLayout;
+    }
 
-	/**
-	 * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
-	 *      boolean, boolean, int, int, int, int)
-	 */
-	public static GridData newGridData(final int hAlign, final int vAlign, final boolean hSpace, final boolean vSpace,
-			final int wHint, final int hHint) {
-		return createGridData(hAlign, vAlign, hSpace, vSpace, 1, 1, wHint, hHint);
-	}
+    /**
+     * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
+     *      boolean, boolean, int, int, int, int)
+     */
+    public static GridData newGridData() {
+	return createGridData(SWT.FILL, SWT.FILL, true, false, 1, 1, -1, -1);
+    }
 
-	/**
-	 * @see io.github.seerainer.swtextedit.layout.Grid#createGridLayout(int, int,
-	 *      int, int, int, boolean)
-	 */
-	public static GridLayout newGridLayout(final int wMargin, final int hMargin, final int hSpace, final int vSpace,
-			final int nColumns, final boolean equal) {
-		return createGridLayout(wMargin, hMargin, hSpace, vSpace, nColumns, equal);
-	}
+    /**
+     * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
+     *      boolean, boolean, int, int, int, int)
+     */
+    public static GridData newGridData(final boolean hSpace, final boolean vSpace) {
+	return createGridData(SWT.FILL, SWT.FILL, hSpace, vSpace, 1, 1, -1, -1);
+    }
 
-	/** Private empty constructor. */
-	private Grid() {
-	}
+    /**
+     * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
+     *      boolean, boolean, int, int, int, int)
+     */
+    public static GridData newGridData(final int hSpan, final int vSpan) {
+	return createGridData(SWT.FILL, SWT.FILL, true, false, hSpan, vSpan, -1, -1);
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.layout.Grid#createGridData(int, int,
+     *      boolean, boolean, int, int, int, int)
+     */
+    public static GridData newGridData(final int hAlign, final int vAlign, final boolean hSpace, final boolean vSpace,
+	    final int wHint, final int hHint) {
+	return createGridData(hAlign, vAlign, hSpace, vSpace, 1, 1, wHint, hHint);
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.layout.Grid#createGridLayout(int, int,
+     *      int, int, int, boolean)
+     */
+    public static GridLayout newGridLayout(final int wMargin, final int hMargin, final int hSpace, final int vSpace,
+	    final int nColumns, final boolean equal) {
+	return createGridLayout(wMargin, hMargin, hSpace, vSpace, nColumns, equal);
+    }
 }

@@ -36,56 +36,56 @@ import io.github.seerainer.swtextedit.util.StringUtil;
  */
 public final class LabelWidget {
 
-	/**
-	 * Creates a new Label with the given Parameters.
-	 *
-	 * @param parent   The parent of the new label.
-	 * @param style    The style of the new label.
-	 * @param gridData The layout of the label (GridData).
-	 * @param textID   The text of the label.
-	 * @return Returns the new label.
-	 */
-	private static Label createLabel(final Composite parent, final int style, final GridData gridData,
-			final String textID) {
-		final var label = new Label(parent, style);
-		label.setForeground(parent.getForeground());
+    /** Private empty constructor. */
+    private LabelWidget() {
+    }
 
-		if (gridData != null) {
-			label.setLayoutData(gridData);
-		}
+    /**
+     * Creates a new Label with the given Parameters.
+     *
+     * @param parent   The parent of the new label.
+     * @param style    The style of the new label.
+     * @param gridData The layout of the label (GridData).
+     * @param textID   The text of the label.
+     * @return Returns the new label.
+     */
+    private static Label createLabel(final Composite parent, final int style, final GridData gridData,
+	    final String textID) {
+	final var label = new Label(parent, style);
+	label.setForeground(parent.getForeground());
 
-		if (!StringUtil.isValueEmpty(textID)) {
-			label.setData("TEXTID", textID); //$NON-NLS-1$
-		}
-
-		return label;
+	if (gridData != null) {
+	    label.setLayoutData(gridData);
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.LabelWidget#createLabel(Composite,
-	 *      int, GridData, String)
-	 */
-	public static Label hLine(final Composite parent) {
-		return createLabel(parent, SWT.SEPARATOR | SWT.HORIZONTAL, Grid.newGridData(), null);
+	if (!StringUtil.isValueEmpty(textID)) {
+	    label.setData("TEXTID", textID); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.LabelWidget#createLabel(Composite,
-	 *      int, GridData, String)
-	 */
-	public static Label newLabel(final Composite parent, final GridData gridData, final String textID) {
-		return createLabel(parent, SWT.LEFT, gridData, textID);
-	}
+	return label;
+    }
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.LabelWidget#createLabel(Composite,
-	 *      int, GridData, String)
-	 */
-	public static Label vLine(final Composite parent) {
-		return createLabel(parent, SWT.SEPARATOR | SWT.VERTICAL, Grid.newGridData(false, true), null);
-	}
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.LabelWidget#createLabel(Composite,
+     *      int, GridData, String)
+     */
+    public static Label hLine(final Composite parent) {
+	return createLabel(parent, SWT.SEPARATOR | SWT.HORIZONTAL, Grid.newGridData(), null);
+    }
 
-	/** Private empty constructor. */
-	private LabelWidget() {
-	}
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.LabelWidget#createLabel(Composite,
+     *      int, GridData, String)
+     */
+    public static Label newLabel(final Composite parent, final GridData gridData, final String textID) {
+	return createLabel(parent, SWT.LEFT, gridData, textID);
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.LabelWidget#createLabel(Composite,
+     *      int, GridData, String)
+     */
+    public static Label vLine(final Composite parent) {
+	return createLabel(parent, SWT.SEPARATOR | SWT.VERTICAL, Grid.newGridData(false, true), null);
+    }
 }

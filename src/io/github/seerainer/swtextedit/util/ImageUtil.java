@@ -34,26 +34,26 @@ import org.eclipse.swt.widgets.Display;
  */
 public final class ImageUtil {
 
-	/**
-	 * Generates a new graphic.
-	 *
-	 * @param display The parent of the image.
-	 * @param image   Name of the image.
-	 * @return Returns the graphic.
-	 */
-	public static Image newImage(final Display display, final String image) {
-		try (final var is = ClassLoader.getSystemResource(image).openStream()) {
-			final var img = new Image(display, is);
-			img.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-			return img;
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
+    /** Private empty constructor. */
+    private ImageUtil() {
+    }
 
-		return null;
+    /**
+     * Generates a new graphic.
+     *
+     * @param display The parent of the image.
+     * @param image   Name of the image.
+     * @return Returns the graphic.
+     */
+    public static Image newImage(final Display display, final String image) {
+	try (final var is = ClassLoader.getSystemResource(image).openStream()) {
+	    final var img = new Image(display, is);
+	    img.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+	    return img;
+	} catch (final IOException e) {
+	    e.printStackTrace();
 	}
 
-	/** Private empty constructor. */
-	private ImageUtil() {
-	}
+	return null;
+    }
 }

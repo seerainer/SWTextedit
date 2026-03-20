@@ -22,6 +22,7 @@
 package io.github.seerainer.swtextedit;
 
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -43,98 +44,102 @@ import io.github.seerainer.swtextedit.widgets.FileDialogWidget;
  */
 public final class SWTextedit {
 
-	/**
-	 * Main method.
-	 *
-	 * @param args Argument loaded with SWTextedit.
-	 */
-	public static void main(final String[] args) {
-		if (args.length > 0) {
-			new SWTextedit(args[0]);
-		} else {
-			new SWTextedit(null);
+    private static final Logger LOG = Logger.getLogger(SWTextedit.class.getName());
+    private static final long START = System.currentTimeMillis();
+    /** Instance of GuiConfigData for all configuration data. */
+    private final ConfigData configData = new ConfigData();
+    /** HashSet for the language control. */
+    private final HashSet<Widget> widgets = new HashSet<>();
+    /** Instance of the UI widgets. */
+    private final Widgets guiWidgets = new Widgets(configData, widgets);
+
+    /**
+     * Default Constructor of SWTextedit.
+     *
+     * @param file Argument loaded with SWTextedit.
+     */
+    private SWTextedit(final String file) {
+	openClose(file);
+    }
+
+    /**
+     * Main method.
+     *
+     * @param args Argument loaded with SWTextedit.
+     */
+    public static void main(final String[] args) {
+	if (args.length > 0) {
+	    new SWTextedit(args[0]);
+	} else {
+	    new SWTextedit(null);
+	}
+    }
+
+    /**
+     * Drop target on the control.
+     *
+     * @param control the styledText
+     */
+    private void dropTarget(final Control control) {
+	final var dropTarget = new DropTarget(control, DND.DROP_COPY | DND.DROP_DEFAULT);
+	dropTarget.setTransfer(FileTransfer.getInstance());
+	dropTarget.addDropListener(new DropTargetAdapter() {
+	    @Override
+	    public void dragEnter(final DropTargetEvent event) {
+		if (event.detail == DND.DROP_DEFAULT) {
+		    event.detail = DND.DROP_COPY;
 		}
-	}
+	    }
 
-	/** Instance of GuiConfigData for all configuration data. */
-	private final ConfigData configData = new ConfigData();
+	    @Override
+	    public void dragOperationChanged(final DropTargetEvent event) {
+		if (event.detail == DND.DROP_DEFAULT) {
+		    event.detail = DND.DROP_COPY;
+		}
+	    }
 
-	/** HashSet for the language control. */
-	private final HashSet<Widget> widgets = new HashSet<>();
+	    @Override
+	    public void dragOver(final DropTargetEvent event) {
+		if (event.detail == DND.DROP_DEFAULT) {
+		    event.detail = DND.DROP_COPY;
+		}
+	    }
 
-	/** Instance of the UI widgets. */
-	private final Widgets guiWidgets = new Widgets(configData, widgets);
-
-	/**
-	 * Default Constructor of SWTextedit.
-	 *
-	 * @param file Argument loaded with SWTextedit.
-	 */
-	private SWTextedit(final String file) {
-		openClose(file);
-	}
-
-	/**
-	 * Drop target on the control.
-	 *
-	 * @param control the styledText
-	 */
-	private void dropTarget(final Control control) {
-		final var dropTarget = new DropTarget(control, DND.DROP_COPY | DND.DROP_DEFAULT);
-		dropTarget.setTransfer(FileTransfer.getInstance());
-		dropTarget.addDropListener(new DropTargetAdapter() {
-			@Override
-			public void dragEnter(final DropTargetEvent event) {
-				if (event.detail == DND.DROP_DEFAULT) {
-					event.detail = DND.DROP_COPY;
-				}
-			}
-
-			@Override
-			public void dragOperationChanged(final DropTargetEvent event) {
-				if (event.detail == DND.DROP_DEFAULT) {
-					event.detail = DND.DROP_COPY;
-				}
-			}
-
-			@Override
-			public void dragOver(final DropTargetEvent event) {
-				if (event.detail == DND.DROP_DEFAULT) {
-					event.detail = DND.DROP_COPY;
-				}
-			}
-
-			@Override
-			public void drop(final DropTargetEvent event) {
-				if (event.data != null) {
-					configData.setFilename(((String[]) event.data)[0]);
-					FileDialogWidget.open(guiWidgets.getStyledText(), guiWidgets.getShell(), configData);
-				}
-			}
-		});
-	}
-
-	/**
-	 * Opens and closes the program.
-	 */
-	private void openClose(final String file) {
-		final var shell = guiWidgets.getShell();
-		CharacterEncoding.setEncoding(CharacterEncoding.UTF8);
-		configData.setFilename(file);
-		guiWidgets.getStyledText().setLeftMargin(1);
-		dropTarget(guiWidgets.getStyledText());
-		LangUtil.setLang(widgets, configData);
-
-		shell.open();
-
+	    @Override
+	    public void drop(final DropTargetEvent event) {
+		if (event.data == null) {
+		    return;
+		}
+		configData.setFilename(((String[]) event.data)[0]);
 		FileDialogWidget.open(guiWidgets.getStyledText(), guiWidgets.getShell(), configData);
+	    }
+	});
+    }
 
-		final var display = shell.getDisplay();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-		display.dispose();
+    /**
+     * Opens and closes the program.
+     */
+    private void openClose(final String file) {
+	final var shell = guiWidgets.getShell();
+	CharacterEncoding.setEncoding(CharacterEncoding.UTF8);
+	configData.setFilename(file);
+	LangUtil.setLang(widgets, configData);
+	shell.open();
+
+	LOG.info(new StringBuilder().append("SWTextedit started in ").append(System.currentTimeMillis() - START)
+		.append("ms").toString());
+	guiWidgets.getStyledText().setLeftMargin(1);
+	dropTarget(guiWidgets.getStyledText());
+	FileDialogWidget.open(guiWidgets.getStyledText(), guiWidgets.getShell(), configData);
+
+	final var display = shell.getDisplay();
+	while (!shell.isDisposed()) {
+	    if (!display.readAndDispatch()) {
+		display.sleep();
+	    }
 	}
+	LOG.info(new StringBuilder().append("SWTextedit stopped after ")
+		.append((System.currentTimeMillis() - START) / 1000).append("s").toString());
+	display.dispose();
+    }
 }

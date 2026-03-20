@@ -30,71 +30,71 @@ import org.eclipse.swt.custom.StyledText;
  */
 public final class StringUtil {
 
-	/**
-	 * Checks if the String is empty.
-	 *
-	 * @param value This should be a String value.
-	 * @return Returns true if the value is empty.
-	 */
-	public static boolean isValueEmpty(final Object value) {
-		if (value != null && value.getClass().equals(String.class) && ((String) value).length() > 0) {
-			return false;
-		}
-		return true;
+    /** Private empty constructor. */
+    private StringUtil() {
+    }
+
+    /**
+     * Checks if the String is empty.
+     *
+     * @param value This should be a String value.
+     * @return Returns true if the value is empty.
+     */
+    public static boolean isValueEmpty(final Object value) {
+	if (value != null && value.getClass().equals(String.class) && ((String) value).length() > 0) {
+	    return false;
+	}
+	return true;
+    }
+
+    /**
+     * Converts the text or the selected text to lowercase.
+     *
+     * @param text StyledText widget, contains the text.
+     * @return Returns the StyledText widget.
+     */
+    public static StyledText lowercase(final StyledText text) {
+	final var range = text.getSelectionRange();
+	if (range.y > 0) {
+	    text.replaceTextRange(range.x, range.y, text.getSelectionText().toLowerCase());
+	} else {
+	    text.setText(text.getText().toLowerCase());
 	}
 
-	/**
-	 * Converts the text or the selected text to lowercase.
-	 *
-	 * @param text StyledText widget, contains the text.
-	 * @return Returns the StyledText widget.
-	 */
-	public static StyledText lowercase(final StyledText text) {
-		final var range = text.getSelectionRange();
-		if (range.y > 0) {
-			text.replaceTextRange(range.x, range.y, text.getSelectionText().toLowerCase());
-		} else {
-			text.setText(text.getText().toLowerCase());
-		}
+	return text;
+    }
 
-		return text;
+    /**
+     * Trimming leading and trailing whitespace of the text or the selected text.
+     *
+     * @param text StyledText widget, contains the text.
+     * @return Returns the StyledText widget.
+     */
+    public static StyledText trim(final StyledText text) {
+	final var range = text.getSelectionRange();
+	if (range.y > 0) {
+	    text.replaceTextRange(range.x, range.y, text.getSelectionText().trim());
+	} else {
+	    text.setText(text.getText().trim());
 	}
 
-	/**
-	 * Trimming leading and trailing whitespace of the text or the selected text.
-	 *
-	 * @param text StyledText widget, contains the text.
-	 * @return Returns the StyledText widget.
-	 */
-	public static StyledText trim(final StyledText text) {
-		final var range = text.getSelectionRange();
-		if (range.y > 0) {
-			text.replaceTextRange(range.x, range.y, text.getSelectionText().trim());
-		} else {
-			text.setText(text.getText().trim());
-		}
+	return text;
+    }
 
-		return text;
+    /**
+     * Converts the text or the selected text to uppercase.
+     *
+     * @param text StyledText widget, contains the text.
+     * @return Returns the StyledText widget.
+     */
+    public static StyledText uppercase(final StyledText text) {
+	final var range = text.getSelectionRange();
+	if (range.y > 0) {
+	    text.replaceTextRange(range.x, range.y, text.getSelectionText().toUpperCase());
+	} else {
+	    text.setText(text.getText().toUpperCase());
 	}
 
-	/**
-	 * Converts the text or the selected text to uppercase.
-	 *
-	 * @param text StyledText widget, contains the text.
-	 * @return Returns the StyledText widget.
-	 */
-	public static StyledText uppercase(final StyledText text) {
-		final var range = text.getSelectionRange();
-		if (range.y > 0) {
-			text.replaceTextRange(range.x, range.y, text.getSelectionText().toUpperCase());
-		} else {
-			text.setText(text.getText().toUpperCase());
-		}
-
-		return text;
-	}
-
-	/** Private empty constructor. */
-	private StringUtil() {
-	}
+	return text;
+    }
 }

@@ -34,27 +34,27 @@ import org.eclipse.swt.widgets.Shell;
  */
 public final class PrintUtil {
 
-	/**
-	 * Opens the print dialog.
-	 *
-	 * @param shell The parent of the dialog.
-	 * @param text  The text of the text widget.
-	 */
-	public static void printDialog(final Shell shell, final StyledText text) {
-		final var dialog = new PrintDialog(shell, SWT.NONE);
-		final var data = dialog.open();
-		if (data == null) {
-			return;
-		}
-		final var printer = new Printer(data);
-		final var runnable = text.print(printer);
-		new Thread(() -> {
-			runnable.run();
-			printer.dispose();
-		}).start();
-	}
+    /** Private empty constructor. */
+    private PrintUtil() {
+    }
 
-	/** Private empty constructor. */
-	private PrintUtil() {
+    /**
+     * Opens the print dialog.
+     *
+     * @param shell The parent of the dialog.
+     * @param text  The text of the text widget.
+     */
+    public static void printDialog(final Shell shell, final StyledText text) {
+	final var dialog = new PrintDialog(shell, SWT.NONE);
+	final var data = dialog.open();
+	if (data == null) {
+	    return;
 	}
+	final var printer = new Printer(data);
+	final var runnable = text.print(printer);
+	new Thread(() -> {
+	    runnable.run();
+	    printer.dispose();
+	}).start();
+    }
 }

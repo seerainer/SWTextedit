@@ -40,49 +40,49 @@ import io.github.seerainer.swtextedit.config.CharacterEncoding;
  */
 public final class IO {
 
-	/**
-	 * Method for opening a file into the text widget.
-	 *
-	 * @param file The file which will be converted into a String.
-	 * @param text The String of the file loaded into this text widget.
-	 * @return Returns the success of opening the file.
-	 */
-	public static boolean open(final File file, final StyledText text) {
-		try (final var br = new BufferedReader(
-				new InputStreamReader(new FileInputStream(file), CharacterEncoding.getEncoding()))) {
-			final var buff = new StringBuilder();
+    /** Private empty constructor. */
+    private IO() {
+    }
 
-			br.lines().forEach(line -> buff.append(line + "\n"));//$NON-NLS-1$
+    /**
+     * Method for opening a file into the text widget.
+     *
+     * @param file The file which will be converted into a String.
+     * @param text The String of the file loaded into this text widget.
+     * @return Returns the success of opening the file.
+     */
+    public static boolean open(final File file, final StyledText text) {
+	try (final var br = new BufferedReader(
+		new InputStreamReader(new FileInputStream(file), CharacterEncoding.getEncoding()))) {
+	    final var buff = new StringBuilder();
 
-			text.setText(buff.toString());
-			return true;
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
+	    br.lines().forEach(line -> buff.append(line + "\n"));//$NON-NLS-1$
 
-		return false;
+	    text.setText(buff.toString());
+	    return true;
+	} catch (final Exception e) {
+	    e.printStackTrace();
 	}
 
-	/**
-	 * Method for saving the String into a file.
-	 *
-	 * @param file The file which will be saved.
-	 * @param text The content of the file as String.
-	 * @return Returns the success of saving the file.
-	 */
-	public static boolean save(final File file, final String text) {
-		try (final var bw = new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream(file), CharacterEncoding.getEncoding()))) {
-			bw.write(text);
-			return true;
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
+	return false;
+    }
 
-		return false;
+    /**
+     * Method for saving the String into a file.
+     *
+     * @param file The file which will be saved.
+     * @param text The content of the file as String.
+     * @return Returns the success of saving the file.
+     */
+    public static boolean save(final File file, final String text) {
+	try (final var bw = new BufferedWriter(
+		new OutputStreamWriter(new FileOutputStream(file), CharacterEncoding.getEncoding()))) {
+	    bw.write(text);
+	    return true;
+	} catch (final Exception e) {
+	    e.printStackTrace();
 	}
 
-	/** Private empty constructor. */
-	private IO() {
-	}
+	return false;
+    }
 }

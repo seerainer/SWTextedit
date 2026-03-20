@@ -32,22 +32,22 @@ import io.github.seerainer.swtextedit.config.ConfigData;
  */
 public final class TextUtil {
 
-	/**
-	 * Wraps the lines of the styled text widget.
-	 *
-	 * @param configData The configuration data of the GUI.
-	 * @param text       The styled text widget.
-	 */
-	public static void wrap(final ConfigData configData, final StyledText text) {
-		if (configData.isWrap()) {
-			configData.setWrap(false);
-		} else {
-			configData.setWrap(true);
-		}
-		text.setWordWrap(configData.isWrap());
-	}
+    /** Private empty constructor. */
+    private TextUtil() {
+    }
 
-	/** Private empty constructor. */
-	private TextUtil() {
+    /**
+     * Wraps the lines of the styled text widget.
+     *
+     * @param configData The configuration data of the GUI.
+     * @param text       The styled text widget.
+     */
+    public static void wrap(final ConfigData configData, final StyledText text) {
+	if (configData.isWrap()) {
+	    configData.setWrap(false);
+	} else {
+	    configData.setWrap(true);
 	}
+	text.setWordWrap(configData.isWrap());
+    }
 }

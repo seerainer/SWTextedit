@@ -44,67 +44,67 @@ import io.github.seerainer.swtextedit.widgets.ShellWidget;
  */
 public final class SystemProperties {
 
-	/** HashSet for the language control. */
-	private final HashSet<Shell> widgets = new HashSet<>();
+    /** HashSet for the language control. */
+    private final HashSet<Shell> widgets = new HashSet<>();
 
-	/** Instance of Shell. */
-	private Shell sysProps;
+    /** Instance of Shell. */
+    private Shell sysProps;
 
-	/** Public constructor. */
-	public SystemProperties(final Shell parent, final ConfigData configData) {
-		shell(parent);
-		table(configData);
+    /** Public constructor. */
+    public SystemProperties(final Shell parent, final ConfigData configData) {
+	shell(parent);
+	table(configData);
 
-		LangUtil.setLang(widgets, configData);
+	LangUtil.setLang(widgets, configData);
 
-		sysProps.open();
+	sysProps.open();
+    }
+
+    /**
+     * Creates a new Shell for the system information dialog.
+     *
+     * @param parent The parent of the dialog.
+     */
+    private void shell(final Shell parent) {
+	sysProps = ShellWidget.newShell(parent, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL, "systeminfo_title", //$NON-NLS-1$
+		Icons.text, 1024, 768, Grid.newGridLayout(0, 0, 0, 0, 1, false), true, true);
+	widgets.add(sysProps);
+    }
+
+    /**
+     * Creates a table with the system properties.
+     */
+    private void table(final ConfigData configData) {
+	final var tbl = new Table(sysProps, SWT.FULL_SELECTION);
+	tbl.setLayoutData(Grid.newGridData(true, true));
+	tbl.setLinesVisible(true);
+
+	final var col1 = new TableColumn(tbl, SWT.LEAD, 0);
+	final var col2 = new TableColumn(tbl, SWT.LEAD, 1);
+
+	final var properties = System.getProperties();
+
+	for (final Enumeration<?> e = properties.keys(); e.hasMoreElements();) {
+	    final var item = new TableItem(tbl, SWT.NONE);
+	    final var key = e.nextElement();
+	    item.setText(new String[] { (String) key, (String) properties.get(key) });
 	}
 
-	/**
-	 * Creates a new Shell for the system information dialog.
-	 *
-	 * @param parent The parent of the dialog.
-	 */
-	private void shell(final Shell parent) {
-		sysProps = ShellWidget.newShell(parent, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL, "systeminfo_title", //$NON-NLS-1$
-				Icons.text, 1024, 768, Grid.newGridLayout(0, 0, 0, 0, 1, false), true, true);
-		widgets.add(sysProps);
+	final var env = System.getenv();
+
+	env.keySet().forEach((final String envName) -> new TableItem(tbl, SWT.NONE)
+		.setText(new String[] { envName, env.get(envName) }));
+
+	col1.pack();
+	col2.pack();
+
+	if (!configData.isDarkMode()) {
+	    return;
 	}
 
-	/**
-	 * Creates a table with the system properties.
-	 */
-	private void table(final ConfigData configData) {
-		final var tbl = new Table(sysProps, SWT.FULL_SELECTION);
-		tbl.setLayoutData(Grid.newGridData(true, true));
-		tbl.setLinesVisible(true);
-
-		final var col1 = new TableColumn(tbl, SWT.LEAD, 0);
-		final var col2 = new TableColumn(tbl, SWT.LEAD, 1);
-
-		final var properties = System.getProperties();
-
-		for (final Enumeration<?> e = properties.keys(); e.hasMoreElements();) {
-			final var item = new TableItem(tbl, SWT.NONE);
-			final Object key = e.nextElement();
-			item.setText(new String[] { (String) key, (String) properties.get(key) });
-		}
-
-		final var env = System.getenv();
-
-		env.keySet().forEach((final String envName) -> new TableItem(tbl, SWT.NONE)
-				.setText(new String[] { envName, env.get(envName) }));
-
-		col1.pack();
-		col2.pack();
-
-		if (!configData.isDarkMode()) {
-			return;
-		}
-
-		tbl.setBackground(new Color(0x30, 0x30, 0x30));
-		tbl.setForeground(new Color(0xEE, 0xEE, 0xEE));
-		tbl.setHeaderBackground(new Color(0x40, 0x40, 0x40));
-		tbl.setHeaderForeground(new Color(0xDD, 0xDD, 0xDD));
-	}
+	tbl.setBackground(new Color(0x30, 0x30, 0x30));
+	tbl.setForeground(new Color(0xEE, 0xEE, 0xEE));
+	tbl.setHeaderBackground(new Color(0x40, 0x40, 0x40));
+	tbl.setHeaderForeground(new Color(0xDD, 0xDD, 0xDD));
+    }
 }

@@ -52,156 +52,156 @@ import io.github.seerainer.swtextedit.widgets.TextWidget;
  */
 public final class About {
 
-	/** Instances of the Groups. */
-	private Group info;
+    /** Instances of the Groups. */
+    private Group info;
 
-	/**
-	 * Instances of the Groups.
-	 */
-	private Group license;
+    /**
+     * Instances of the Groups.
+     */
+    private Group license;
 
-	/** Instance of GUIConfigData for all configuration variables. */
-	private ConfigData configData;
+    /** Instance of GUIConfigData for all configuration variables. */
+    private ConfigData configData;
 
-	/** HashSet for the language control. */
-	private final HashSet<Control> widgets = new HashSet<>();
+    /** HashSet for the language control. */
+    private final HashSet<Control> widgets = new HashSet<>();
 
-	/** Instances for the version. */
-	private Label version;
+    /** Instances for the version. */
+    private Label version;
 
-	/** Instance of Shell. */
-	private Shell dialog;
+    /** Instance of Shell. */
+    private Shell dialog;
 
-	/** Listener for the mail. */
-	private final SelectionListener piseeMail = widgetSelectedAdapter(
-			e -> Program.launch(configData.getLangRes().getString("mail"))); //$NON-NLS-1$
+    /** Listener for the mail. */
+    private final SelectionListener piseeMail = widgetSelectedAdapter(
+	    _ -> Program.launch(configData.getLangRes().getString("mail"))); //$NON-NLS-1$
 
-	/** Listener for the website. */
-	private final SelectionListener piseeHP = widgetSelectedAdapter(
-			e -> Program.launch(configData.getLangRes().getString("web"))); //$NON-NLS-1$
+    /** Listener for the website. */
+    private final SelectionListener piseeHP = widgetSelectedAdapter(
+	    _ -> Program.launch(configData.getLangRes().getString("web"))); //$NON-NLS-1$
 
-	/** Listener for the eclipse license. */
-	private final SelectionListener epl = widgetSelectedAdapter(
-			e -> Program.launch(configData.getLangRes().getString("epl"))); //$NON-NLS-1$
+    /** Listener for the eclipse license. */
+    private final SelectionListener epl = widgetSelectedAdapter(
+	    _ -> Program.launch(configData.getLangRes().getString("epl"))); //$NON-NLS-1$
 
-	/** Listener for the GPL license. */
-	private final SelectionListener gpl = widgetSelectedAdapter(
-			e -> Program.launch(configData.getLangRes().getString("gpl"))); //$NON-NLS-1$
+    /** Listener for the GPL license. */
+    private final SelectionListener gpl = widgetSelectedAdapter(
+	    _ -> Program.launch(configData.getLangRes().getString("gpl"))); //$NON-NLS-1$
 
-	/** Listener for the OK button. */
-	private final SelectionListener close = widgetSelectedAdapter(e -> dialog.close());
+    /** Listener for the OK button. */
+    private final SelectionListener close = widgetSelectedAdapter(_ -> dialog.close());
 
-	/**
-	 * Public constructor.
-	 *
-	 * @param parent     The parent of the dialog.
-	 * @param configData The configuration values of the GUI.
-	 */
-	public About(final Shell parent, final ConfigData configData) {
-		this.configData = configData;
+    /**
+     * Public constructor.
+     *
+     * @param parent     The parent of the dialog.
+     * @param configData The configuration values of the GUI.
+     */
+    public About(final Shell parent, final ConfigData configData) {
+	this.configData = configData;
 
-		shell(parent);
-		groups();
-		okButton();
+	shell(parent);
+	groups();
+	okButton();
 
-		LangUtil.setLang(widgets, configData);
+	LangUtil.setLang(widgets, configData);
 
-		version.setText(version.getText() + configData.getVersion());
+	version.setText(version.getText() + configData.getVersion());
 
-		dialog.open();
+	dialog.open();
+    }
+
+    /**
+     * Two groups for program information and the license.
+     */
+    private void groups() {
+	info = GroupWidget.newGroup(dialog, SWT.SHADOW_IN, Grid.newGridData(),
+		Grid.newGridLayout(10, 10, 1, 5, 1, false), "about_info"); //$NON-NLS-1$
+	widgets.add(info);
+
+	license = GroupWidget.newGroup(dialog, SWT.SHADOW_OUT, Grid.newGridData(true, true),
+		Grid.newGridLayout(10, 10, 1, 5, 1, false), "about_license"); //$NON-NLS-1$
+	widgets.add(license);
+
+	if (configData.isDarkMode()) {
+	    final var lght = new Color(0xD0, 0xD0, 0xD0);
+	    info.setForeground(lght);
+	    license.setForeground(lght);
 	}
 
-	/**
-	 * Two groups for program information and the license.
-	 */
-	private void groups() {
-		info = GroupWidget.newGroup(dialog, SWT.SHADOW_IN, Grid.newGridData(),
-				Grid.newGridLayout(10, 10, 1, 5, 1, false), "about_info"); //$NON-NLS-1$
-		widgets.add(info);
+	infoGroup();
+	licenseGroup();
+    }
 
-		license = GroupWidget.newGroup(dialog, SWT.SHADOW_OUT, Grid.newGridData(true, true),
-				Grid.newGridLayout(10, 10, 1, 5, 1, false), "about_license"); //$NON-NLS-1$
-		widgets.add(license);
+    /**
+     * Information and weblinks.
+     */
+    private void infoGroup() {
+	final var name = LabelWidget.newLabel(info, Grid.newGridData(), "about_info_name"); //$NON-NLS-1$
+	widgets.add(name);
+	version = LabelWidget.newLabel(info, Grid.newGridData(), "about_info_version"); //$NON-NLS-1$
+	widgets.add(version);
 
-		if (configData.isDarkMode()) {
-			final var lght = new Color(0xD0, 0xD0, 0xD0);
-			info.setForeground(lght);
-			license.setForeground(lght);
-		}
-
-		infoGroup();
-		licenseGroup();
+	if (configData.isDarkMode()) {
+	    final var lght = new Color(0xD0, 0xD0, 0xD0);
+	    name.setForeground(lght);
+	    version.setForeground(lght);
 	}
 
-	/**
-	 * Information and weblinks.
-	 */
-	private void infoGroup() {
-		final var name = LabelWidget.newLabel(info, Grid.newGridData(), "about_info_name"); //$NON-NLS-1$
-		widgets.add(name);
-		version = LabelWidget.newLabel(info, Grid.newGridData(), "about_info_version"); //$NON-NLS-1$
-		widgets.add(version);
+	LabelWidget.hLine(info);
 
-		if (configData.isDarkMode()) {
-			final var lght = new Color(0xD0, 0xD0, 0xD0);
-			name.setForeground(lght);
-			version.setForeground(lght);
-		}
+	widgets.add(LinkWidget.newLink(info, SWT.NONE, Grid.newGridData(), "about_info_author", piseeMail)); //$NON-NLS-1$
+	widgets.add(LinkWidget.newLink(info, SWT.NONE, Grid.newGridData(), "about_info_web", piseeHP)); //$NON-NLS-1$
+    }
 
-		LabelWidget.hLine(info);
+    /**
+     * Info about the license.
+     */
+    private void licenseGroup() {
+	final var swtlic = LabelWidget.newLabel(license, Grid.newGridData(), "about_license_swt"); //$NON-NLS-1$
+	widgets.add(swtlic);
+	widgets.add(LinkWidget.newLink(license, SWT.NONE, Grid.newGridData(), "about_license_epl", epl)); //$NON-NLS-1$
 
-		widgets.add(LinkWidget.newLink(info, SWT.NONE, Grid.newGridData(), "about_info_author", piseeMail)); //$NON-NLS-1$
-		widgets.add(LinkWidget.newLink(info, SWT.NONE, Grid.newGridData(), "about_info_web", piseeHP)); //$NON-NLS-1$
+	LabelWidget.hLine(license);
+
+	widgets.add(LinkWidget.newLink(license, SWT.NONE, Grid.newGridData(), "about_license_gpl", gpl)); //$NON-NLS-1$
+
+	final var text = TextWidget.newText(license, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL,
+		Grid.newGridData(true, true), false, false);
+	text.setText(configData.getLangRes().getString("license")); //$NON-NLS-1$
+
+	if (!configData.isDarkMode()) {
+	    return;
 	}
 
-	/**
-	 * Info about the license.
-	 */
-	private void licenseGroup() {
-		final var swtlic = LabelWidget.newLabel(license, Grid.newGridData(), "about_license_swt"); //$NON-NLS-1$
-		widgets.add(swtlic);
-		widgets.add(LinkWidget.newLink(license, SWT.NONE, Grid.newGridData(), "about_license_epl", epl)); //$NON-NLS-1$
+	final var lght = new Color(0xD0, 0xD0, 0xD0);
+	text.setForeground(lght);
+	swtlic.setForeground(lght);
+    }
 
-		LabelWidget.hLine(license);
+    /**
+     * Button for closing the dialog.
+     */
+    private void okButton() {
+	final var button = ButtonWidget.newButton(dialog, SWT.PUSH, "button_ok", //$NON-NLS-1$
+		Grid.newGridData(SWT.CENTER, SWT.FILL, true, false, 75, -1), close);
+	widgets.add(button);
+	button.setFocus();
+	button.setLocation(dialog.getBounds().width / 2, dialog.getBounds().height - 50);
+	dialog.setDefaultButton(button);
+    }
 
-		widgets.add(LinkWidget.newLink(license, SWT.NONE, Grid.newGridData(), "about_license_gpl", gpl)); //$NON-NLS-1$
-
-		final var text = TextWidget.newText(license, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL,
-				Grid.newGridData(true, true), false, false);
-		text.setText(configData.getLangRes().getString("license")); //$NON-NLS-1$
-
-		if (!configData.isDarkMode()) {
-			return;
-		}
-
-		final var lght = new Color(0xD0, 0xD0, 0xD0);
-		text.setForeground(lght);
-		swtlic.setForeground(lght);
-	}
-
-	/**
-	 * Button for closing the dialog.
-	 */
-	private void okButton() {
-		final var button = ButtonWidget.newButton(dialog, SWT.PUSH, "button_ok", //$NON-NLS-1$
-				Grid.newGridData(SWT.CENTER, SWT.FILL, true, false, 75, -1), close);
-		widgets.add(button);
-		button.setFocus();
-		button.setLocation(dialog.getBounds().width / 2, dialog.getBounds().height - 50);
-		dialog.setDefaultButton(button);
-	}
-
-	/**
-	 * Creates a new Shell for the about dialog.
-	 *
-	 * @param parent The parent of the dialog.
-	 */
-	private void shell(final Shell parent) {
-		dialog = ShellWidget.newShell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL, "about", Icons.text, 470, 530, //$NON-NLS-1$
-				Grid.newGridLayout(5, 5, 5, 5, 1, false), true, false);
-		dialog.setBackground(parent.getBackground());
-		dialog.setForeground(parent.getForeground());
-		dialog.setBackgroundMode(SWT.INHERIT_FORCE);
-		widgets.add(dialog);
-	}
+    /**
+     * Creates a new Shell for the about dialog.
+     *
+     * @param parent The parent of the dialog.
+     */
+    private void shell(final Shell parent) {
+	dialog = ShellWidget.newShell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL, "about", Icons.text, 470, 530, //$NON-NLS-1$
+		Grid.newGridLayout(5, 5, 5, 5, 1, false), true, false);
+	dialog.setBackground(parent.getBackground());
+	dialog.setForeground(parent.getForeground());
+	dialog.setBackgroundMode(SWT.INHERIT_FORCE);
+	widgets.add(dialog);
+    }
 }

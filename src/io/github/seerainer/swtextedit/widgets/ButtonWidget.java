@@ -35,46 +35,46 @@ import io.github.seerainer.swtextedit.util.StringUtil;
  */
 public final class ButtonWidget {
 
-	/**
-	 * Creates a new Button with the given Parameters.
-	 *
-	 * @param parent   The parent of the new button.
-	 * @param style    The style of the new button.
-	 * @param textID   Sets the text of the button.
-	 * @param gridData The layout of the button (GridData).
-	 * @param select   Adds the SelectionListener of the button.
-	 * @return Returns the new button.
-	 */
-	private static Button createButton(final Composite parent, final int style, final String textID,
-			final GridData gridData, final SelectionListener select) {
-		final var button = new Button(parent, style);
-		button.setForeground(parent.getForeground());
+    /** Private empty constructor. */
+    private ButtonWidget() {
+    }
 
-		if (!StringUtil.isValueEmpty(textID)) {
-			button.setData("TEXTID", textID); //$NON-NLS-1$
-		}
+    /**
+     * Creates a new Button with the given Parameters.
+     *
+     * @param parent   The parent of the new button.
+     * @param style    The style of the new button.
+     * @param textID   Sets the text of the button.
+     * @param gridData The layout of the button (GridData).
+     * @param select   Adds the SelectionListener of the button.
+     * @return Returns the new button.
+     */
+    private static Button createButton(final Composite parent, final int style, final String textID,
+	    final GridData gridData, final SelectionListener select) {
+	final var button = new Button(parent, style);
+	button.setForeground(parent.getForeground());
 
-		if (gridData != null) {
-			button.setLayoutData(gridData);
-		}
-
-		if (select != null) {
-			button.addSelectionListener(select);
-		}
-
-		return button;
+	if (!StringUtil.isValueEmpty(textID)) {
+	    button.setData("TEXTID", textID); //$NON-NLS-1$
 	}
 
-	/**
-	 * @see io.github.seerainer.swtextedit.widgets.ButtonWidget#createButton(Composite,
-	 *      int, String, GridData, SelectionListener)
-	 */
-	public static Button newButton(final Composite parent, final int style, final String textID,
-			final GridData gridData, final SelectionListener select) {
-		return createButton(parent, style, textID, gridData, select);
+	if (gridData != null) {
+	    button.setLayoutData(gridData);
 	}
 
-	/** Private empty constructor. */
-	private ButtonWidget() {
+	if (select != null) {
+	    button.addSelectionListener(select);
 	}
+
+	return button;
+    }
+
+    /**
+     * @see io.github.seerainer.swtextedit.widgets.ButtonWidget#createButton(Composite,
+     *      int, String, GridData, SelectionListener)
+     */
+    public static Button newButton(final Composite parent, final int style, final String textID,
+	    final GridData gridData, final SelectionListener select) {
+	return createButton(parent, style, textID, gridData, select);
+    }
 }
